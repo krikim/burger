@@ -1,0 +1,20 @@
+.section{
+    max-width: 600px;
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    max-height: 912px;
+    width: 600px;
+    height: auto;
+    top:128px;
+    left: 1020px;
+    margin-top: 20px;
+    margin-bottom: 60px;
+}
+.scrollbox{
+    composes: section;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    max-height: 400px;
+}
