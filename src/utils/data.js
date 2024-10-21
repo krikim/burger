@@ -210,5 +210,4 @@ const dataItems = [
        "__v":0
     }
  ] 
-
  export default dataItems
