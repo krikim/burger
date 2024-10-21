@@ -50,9 +50,9 @@ HeadElement.propTypes ={
 
 const ScrollBoxElement=({dataList}) =>( 
             
-            dataList.map(function(item){
+            dataList.map(function(item,index){
              return(
-                <div className={styleBC.construct+' mb-4'}>
+                <div key={'scb_element_key_'+index} className={styleBC.construct+' mb-4'}>
                 <>
                 <DragIcon type="primary" />
                 <ConstructorElement
@@ -72,7 +72,7 @@ const ScrollBoxElement=({dataList}) =>(
 )
 
 ScrollBoxElement.propTypes = {
-    dataList: PropTypes.arrayOf(constructPropTypes).isRequired,
+    dataList: PropTypes.arrayOf(constructPropTypes).isRequired
 }
 
 const BottomElement = ({bun}) => (

@@ -18,3 +18,7 @@
     scrollbar-width: thin;
     max-height: 600px;
 }
+.tab{
+    display: flex;
+    flex-direction: row;
+}
