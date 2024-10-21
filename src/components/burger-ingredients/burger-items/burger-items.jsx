@@ -13,34 +13,29 @@ function ItemTypeHeader(props) {
 
 function ItemType (props) {
     const bunData = dataItems.filter((item)=>item.type === props.itype);
+    const itemData = bunData.map(item =>
+          <div key={item._id} className={styleBurgerItem.item+' ml-4 mb-8'}>
+              <img className='ml-4 mb-1' src={item.image}/>
+              <span className={styleBurgerItem.component}>
+                  <p className='text text_type_digits-default'>
+                      {item.price}
+                  </p>
+                  <CurrencyIcon className='pl-2'/>
+              </span>
+              
+              <p className='text text_type_main-small mt-1'>
+                  {item.name}
+              </p>
+              <Counter count={1} size="small" className={styleBurgerItem.item} />
+          </div>     
+          )
+      
+      
+
     return (
             <>
                 <div className={styleBurgerItem.component}>
-                    
-                {bunData.map(function(item){
-                      return (
-                        <>
-                        <div key={item._id} className={styleBurgerItem.item+' ml-4 mb-8'}>
-                            <img className='ml-4 mb-1' src={item.image}/>
-                            <span className={styleBurgerItem.component}>
-                                <p className='text text_type_digits-default'>
-                                    {item.price}
-                                </p>
-                                <CurrencyIcon className='pl-2'/>
-                            </span>
-                            
-                            <p className='text text_type_main-small mt-1'>
-                                {item.name}
-                            </p>
-                            <Counter count={1} size="small" className={styleBurgerItem.item} />
-                        </div>     
-                        
-                        </>
-                
-                        )
-                    }
-                    )
-                }
+                    {itemData}
                 </div>
             </>
     )
@@ -50,11 +45,11 @@ function BurgerItems(){
     return (
         <>
             <ItemTypeHeader itype='bun' />
-            <ItemType itype='bun' />
+            <ItemType key={1} itype='bun' />
             <ItemTypeHeader itype='sauce' />
-            <ItemType itype='sauce' />
+            <ItemType key = {2} itype='sauce' />
             <ItemTypeHeader itype='main' />
-            <ItemType itype='main' />
+            <ItemType key={3} itype='main' />
         </>
     )
 }

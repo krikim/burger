@@ -6,7 +6,7 @@ import BurgerItems from './burger-items/burger-items';
 function SelectTab(){
         const [current, setCurrent] = React.useState('one')
         return (
-          <div  className='mb-8' style={{ display: 'flex' }}>
+          <div  className={styleBI.tab+' mb-8'}>
             <Tab value="one" active={current === 'one'} onClick={setCurrent}>
               Булки
             </Tab>
