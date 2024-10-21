@@ -6,7 +6,7 @@ import BurgerItems from './burger-items/burger-items';
 function SelectTab(){
         const [current, setCurrent] = React.useState('one')
         return (
-          <div style={{ display: 'flex' }}>
+          <div  className='mb-8' style={{ display: 'flex' }}>
             <Tab value="one" active={current === 'one'} onClick={setCurrent}>
               Булки
             </Tab>
@@ -24,7 +24,7 @@ function SelectTab(){
 function BurgerIngredients (){
     return (
         <section className={styleBI.section}>
-            <h2 className='text text_type_main-large mt-4 mb-4'>Соберите бургер</h2>
+            <h2 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h2>
             <SelectTab/>
             <div className={styleBI.scrollbox}>
                 <BurgerItems/>
