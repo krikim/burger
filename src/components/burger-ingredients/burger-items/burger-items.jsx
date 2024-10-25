@@ -1,18 +1,31 @@
 import {Counter, CurrencyIcon}  from '@ya.praktikum/react-developer-burger-ui-components'
-import dataItems from '../../../utils/data.js'
 import styleBurgerItem from './burger-items.module.css'
 
-function ItemTypeHeader(props) {
-    const what = [{type:"bun",name:"Булки"},{type:"sauce",name: "Соусы"},{type:"main",name:"Начинки"}]
+const ItemTypeHeader = ({itype}) => {
+    const what = [{
+                    type:"bun",
+                    name:"Булки"
+                },
+                {
+                    type:"sauce",
+                    name: "Соусы"
+                },
+                {
+                    type:"main",
+                    name:"Начинки"
+                }]
     return (
-            
-            <h2 className={styleBurgerItem.header+' text text_type_main-medium mb-6 mt-2'}>{what.find((item)=>props.itype===item.type).name}</h2>
+            <h2 className={styleBurgerItem.header+' text text_type_main-medium mb-6 mt-2'}>
+                {
+                    what.find((item)=>itype===item.type).name
+                }
+            </h2>
     )
             
 }
 
-function ItemType (props) {
-    const bunData = dataItems.filter((item)=>item.type === props.itype);
+const ItemType = ({dataItems, itype}) => {
+    const bunData = dataItems.filter((item)=>item.type === itype);
     const itemData = bunData.map(item =>
           <div key={item._id} className={styleBurgerItem.item+' ml-4 mb-8'}>
               <img className='ml-4 mb-1' src={item.image}/>
@@ -41,15 +54,16 @@ function ItemType (props) {
     )
 }
 
-function BurgerItems(){
+const BurgerItems = ({dataItems}) => {
+
     return (
         <>
             <ItemTypeHeader itype='bun' />
-            <ItemType key={1} itype='bun' />
+            <ItemType key= {1} itype='bun' dataItems={dataItems}/>
             <ItemTypeHeader itype='sauce' />
-            <ItemType key = {2} itype='sauce' />
+            <ItemType key = {2} itype='sauce' dataItems={dataItems}/>
             <ItemTypeHeader itype='main' />
-            <ItemType key={3} itype='main' />
+            <ItemType key={3} itype='main' dataItems={dataItems}/>
         </>
     )
 }

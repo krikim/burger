@@ -1,16 +1,30 @@
 import {Button, ConstructorElement, CurrencyIcon,DragIcon}  from '@ya.praktikum/react-developer-burger-ui-components';
 import styleBC from './burger-constructor.module.css'
-import dataItems from '../../utils/data';
 import PropTypes from 'prop-types';
+import OrderDetails from '../modal/order-details.jsx'
 
-const SummaryElement = (props) => (
+
+const SummaryElement = ({summ}) => (
+        const handleOpenModal = () => {
+            return (
+                <OrderDetails openForm = {true}>
+
+                
+            )
+        }
         <div className={styleBC.summary+' p-8'}>
-            <span className='text text_type_digits-default pr-2'>{props.summ}</span><CurrencyIcon className='mr-10'/><Button htmlType="button" type="primary" size="small" extraClass="text text_type_digits-small ml-4 p-4">Оформить заказ</Button>
+            <span className='text text_type_digits-default pr-2'>
+                {summ}
+            </span>
+            <CurrencyIcon className='mr-10'/>
+            <Button htmlType="button" type="primary" size="small" extraClass="text text_type_digits-small ml-4 p-4">
+                Оформить заказ
+            </Button>
         </div>
 )
 
 
-BurgerConstructor.propTypes = {
+SummaryElement.propTypes = {
     summ: PropTypes.number
 }
 
@@ -92,7 +106,7 @@ BottomElement.propTypes ={
     bun : constructPropTypes.isRequired
 }
 
-function BurgerConstructor(){
+const BurgerConstructor = ({dataItems}) => {
     const dataList = dataItems.filter((item)=>item.type==='main'||item.type==='sauce')
     const bun= dataItems.find((item)=>item.type==='bun')
     let summ = bun.price;

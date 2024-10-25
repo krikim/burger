@@ -21,13 +21,13 @@ function SelectTab(){
     
 }
 
-function BurgerIngredients (){
+function BurgerIngredients ({dataItems}){
     return (
         <section className={styleBI.section}>
             <h2 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h2>
             <SelectTab/>
             <div className={styleBI.scrollbox}>
-                <BurgerItems/>
+                <BurgerItems dataItems={dataItems}/>
             </div>
         </section>
     )
