@@ -1,27 +1,31 @@
 import {Button, ConstructorElement, CurrencyIcon,DragIcon}  from '@ya.praktikum/react-developer-burger-ui-components';
+import React from 'react';
 import styleBC from './burger-constructor.module.css'
 import PropTypes from 'prop-types';
 import OrderDetails from '../modal/order-details.jsx'
 
 
-const SummaryElement = ({summ}) => (
-        const handleOpenModal = () => {
-            return (
-                <OrderDetails openForm = {true}>
+    
 
-                
-            )
-        }
-        <div className={styleBC.summary+' p-8'}>
+const SummaryElement = ({summ}) => {
+    const [show, setShow] = React.useState(false)
+    const handleShowModal = () =>{
+        setShow(!show)
+    }   
+        
+
+        
+       return (<div className={styleBC.summary+' p-8'}>
             <span className='text text_type_digits-default pr-2'>
                 {summ}
             </span>
             <CurrencyIcon className='mr-10'/>
-            <Button htmlType="button" type="primary" size="small" extraClass="text text_type_digits-small ml-4 p-4">
+            <Button htmlType="button" type="primary" size="small" extraClass="text text_type_digits-small ml-4 p-4" onClick={handleShowModal}>
                 Оформить заказ
             </Button>
-        </div>
-)
+            <OrderDetails show={show} onClose={handleShowModal} />
+        </div>)
+}
 
 
 SummaryElement.propTypes = {
