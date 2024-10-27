@@ -3,19 +3,17 @@ import React from 'react';
 import styleBC from './burger-constructor.module.css'
 import PropTypes from 'prop-types';
 import OrderDetails from '../modal/order-details.jsx'
+import IngredientDetails from '../Modal/ingredient-details.jsx';
 
 
     
 
 const SummaryElement = ({summ}) => {
-    const [show, setShow] = React.useState(false)
-    const handleShowModal = () =>{
+    const [show,setShow] = React.useState(false)
+    const handleShowModal = () => {
         setShow(!show)
-    }   
-        
-
-        
-       return (<div className={styleBC.summary+' p-8'}>
+    }
+    return (<div className={styleBC.summary+' p-8'}>
             <span className='text text_type_digits-default pr-2'>
                 {summ}
             </span>
@@ -23,7 +21,7 @@ const SummaryElement = ({summ}) => {
             <Button htmlType="button" type="primary" size="small" extraClass="text text_type_digits-small ml-4 p-4" onClick={handleShowModal}>
                 Оформить заказ
             </Button>
-            <OrderDetails show={show} onClose={handleShowModal} />
+            <OrderDetails show={show} handleModalClose={handleShowModal} />
         </div>)
 }
 
@@ -66,13 +64,18 @@ HeadElement.propTypes ={
     bun : constructPropTypes.isRequired
 }
 
-const ScrollBoxElement=({dataList}) =>( 
-            
-            dataList.map(function(item,index){
-             return(
-                <div key={'scb_element_key_'+index} className={styleBC.construct+' mb-4'}>
-                <>
-                <DragIcon type="primary" />
+const ScrollBoxElement=({dataList}) =>{ 
+    
+      const elements = dataList.map(function(item,index){
+            const [show,setShow] = React.useState(false)
+            const handleShowModal = () => {
+                setShow(!show)
+            }
+        
+            return(
+                
+                <div key={'scb_element_key_'+index} className={styleBC.construct+' mb-4'} onClick={handleShowModal}>
+                <DragIcon type="primary" key={'DI'+item._id} />
                 <ConstructorElement
                     key={item._id}
                     text={item.name}
@@ -80,17 +83,21 @@ const ScrollBoxElement=({dataList}) =>(
                     thumbnail={item.image}
                     extraClass='pt-4 pb-4 pl-6 pr-8'
                 />
-                </>
+                <IngredientDetails key={'ID'+item._id} show={show} handleModalClose={handleShowModal} ingredientItem={item} />
+
                 </div>
+                
                 
                 )
             }
         )
+        return (elements)
                
-)
+    }
 
 ScrollBoxElement.propTypes = {
     dataList: PropTypes.arrayOf(constructPropTypes).isRequired
+    
 }
 
 const BottomElement = ({bun}) => (
@@ -119,7 +126,7 @@ const BurgerConstructor = ({dataItems}) => {
             <section className={styleBC.section+' ml-10 p-4'}>
                     <HeadElement bun = {bun}/>
                     <div className={styleBC.scrollbox+' p-0 m-0 ml-4'}>
-                        <ScrollBoxElement dataList={dataList}/>
+                        <ScrollBoxElement key='sc1' dataList={dataList}/>
                     </div>     
                     <div className={styleBC.construct+' ml-6 mb-4 mt-4'}>
                         <BottomElement bun={bun}/>

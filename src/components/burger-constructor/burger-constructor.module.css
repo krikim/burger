@@ -22,6 +22,9 @@
     max-height: 90px;
     height: 80px;
 }
+.construct:hover{
+    cursor: pointer;
+}
 
 .summary{
     display: flex;

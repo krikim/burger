@@ -1,6 +1,14 @@
-.close-item{
-    text-align: right;
-}
-.header-item{
-    text-align: left;
+.modal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*margin: auto;*/
+    background-color:rgba(0, 0, 0, 1);
+    z-index: 150;
+    min-width: 750px;
+    max-width: 750px;
+    max-height: 650px;
+    min-height: 650px;
+    border-radius: 60px;
 }
