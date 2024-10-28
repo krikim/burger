@@ -12,19 +12,7 @@
     text-align: center;
     flex-wrap: wrap;
 }
-.close{
-    margin-left: auto;
-}
-.header{
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    width:100%;
-}
-.header:hover{
-    cursor: pointer;
-}
-img{
+.img{
     height: 256px;
     width: auto;
 }

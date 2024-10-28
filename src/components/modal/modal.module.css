@@ -12,3 +12,15 @@
     min-height: 650px;
     border-radius: 60px;
 }
+.close{
+    margin-left: auto;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width:100%;
+}
+.header:hover{
+    cursor: pointer;
+}

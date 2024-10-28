@@ -1,21 +1,13 @@
 import React from 'react';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal.jsx'
+import { } from '@ya.praktikum/react-developer-burger-ui-components';
 import styleID from './ingredient-details.module.css'
 
 
-const IngredientDetails = ({ ingredientItem, show, handleModalClose }) => {
+const IngredientDetails = ({ ingredientItem }) => {
 
         return (
-                <Modal
-                        show={show}
-                        handleModalClose={handleModalClose}
-                >
-                        <span className={styleID.header + ' mt-10'} onClick={handleModalClose} >
-                                <p className='text text_type_main-large ml-10' >Детали ингридиента</p>
-                                <span className={styleID.close+' mr-10'}><CloseIcon type="primary" /></span>
-                        </span>
-                        <img src={ingredientItem.image} />
+                <>       
+                <img className={styleID.img} src={ingredientItem.image} />
                         <p className="text text_type_main-medium mt-4">{ingredientItem.name}</p>
                         <span className={styleID.details+' mb-15 mt-8'}>
                                 <span className={styleID.detailsItem+' mr-5'}>
@@ -51,7 +43,7 @@ const IngredientDetails = ({ ingredientItem, show, handleModalClose }) => {
                                         </span>
                                 </p>
                         </span>
-                </Modal>
+                        </>
         )
 
 }

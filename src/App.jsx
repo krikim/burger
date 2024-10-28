@@ -14,7 +14,12 @@ const App = () => {
   const getIngredientsData = () => {
       setState({...state,hasError: false,isLoading: true})
       fetch(uri)
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка ${res.status}`);
+      })
       .then(data => {setState({...state,data: data.data, isLoading: false});})
       .catch(e => {
         setState({...state, hasError: true, isLoading: false})

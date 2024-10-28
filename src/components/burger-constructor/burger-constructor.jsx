@@ -4,6 +4,7 @@ import styleBC from './burger-constructor.module.css'
 import PropTypes from 'prop-types';
 import OrderDetails from '../modal/order-details.jsx'
 import IngredientDetails from '../Modal/ingredient-details.jsx';
+import Modal from '../modal/modal.jsx';
 
 
     
@@ -13,6 +14,9 @@ const SummaryElement = ({summ}) => {
     const handleShowModal = () => {
         setShow(!show)
     }
+    const handleCloseModal = () => {
+        setShow(false)
+    }
     return (<div className={styleBC.summary+' p-8'}>
             <span className='text text_type_digits-default pr-2'>
                 {summ}
@@ -21,7 +25,13 @@ const SummaryElement = ({summ}) => {
             <Button htmlType="button" type="primary" size="small" extraClass="text text_type_digits-small ml-4 p-4" onClick={handleShowModal}>
                 Оформить заказ
             </Button>
-            <OrderDetails show={show} handleModalClose={handleShowModal} />
+            <Modal
+                    show={show}
+                    header='Состав заказа'
+                    handleModalClose={handleCloseModal}
+            >
+                <OrderDetails orderItems=''  />
+            </Modal>
         </div>)
 }
 
@@ -67,14 +77,17 @@ HeadElement.propTypes ={
 const ScrollBoxElement=({dataList}) =>{ 
     
       const elements = dataList.map(function(item,index){
-            const [show,setShow] = React.useState(false)
-            const handleShowModal = () => {
-                setShow(!show)
+            const [showItem,setShowItem] = React.useState(false)
+            const handleCloseModalItem = () => {
+                setShowItem(false)
             }
-        
+            const handleShowModalItem = () => {
+                setShowItem(!showItem)
+            }
+            
             return(
                 
-                <div key={'scb_element_key_'+index} className={styleBC.construct+' mb-4'} onClick={handleShowModal}>
+                <div key={'scb_element_key_'+index} className={styleBC.construct+' mb-4'} onClick={handleShowModalItem}>
                 <DragIcon type="primary" key={'DI'+item._id} />
                 <ConstructorElement
                     key={item._id}
@@ -83,8 +96,13 @@ const ScrollBoxElement=({dataList}) =>{
                     thumbnail={item.image}
                     extraClass='pt-4 pb-4 pl-6 pr-8'
                 />
-                <IngredientDetails key={'ID'+item._id} show={show} handleModalClose={handleShowModal} ingredientItem={item} />
-
+                <Modal
+                        show={showItem}
+                        header='Детали ингридиента'
+                        handleModalClose={handleCloseModalItem}                
+                >
+                    <IngredientDetails ingredientItem={item} />
+                </Modal>
                 </div>
                 
                 
