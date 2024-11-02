@@ -1,0 +1,26 @@
+.modal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*margin: auto;*/
+    background-color:rgba(0, 0, 0, 1);
+    z-index: 150;
+    min-width: 750px;
+    max-width: 750px;
+    max-height: 650px;
+    min-height: 650px;
+    border-radius: 60px;
+}
+.close{
+    margin-left: auto;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width:100%;
+}
+.header:hover{
+    cursor: pointer;
+}

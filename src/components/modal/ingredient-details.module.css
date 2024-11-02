@@ -1,0 +1,19 @@
+.details{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.detailsItem{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+.img{
+    height: 256px;
+    width: auto;
+}
+

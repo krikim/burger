@@ -1,0 +1,34 @@
+.section{
+    max-width: 600px;
+    display: flex;
+    justify-content: right;
+    flex-direction: column;
+    max-height: 912px;
+    width: 600px;
+    height: 900px;
+    top:128px;
+    left: 1020px;
+}   
+.scrollbox{
+    composes: section;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    max-height: 500px;
+    margin: 0px;
+    padding: 0px;
+}
+.construct{
+    max-height: 90px;
+    height: 80px;
+}
+.construct:hover{
+    cursor: pointer;
+}
+
+.summary{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+}
