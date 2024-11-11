@@ -1,16 +1,14 @@
 import {Button, ConstructorElement, CurrencyIcon,DragIcon}  from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useMemo, useEffect, useRef } from 'react';
 import styleBC from './burger-constructor.module.css';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import OrderDetails from '../modal/order-details.jsx';
-import IngredientDetails from '../Modal/ingredient-details.jsx';
 import Modal from '../modal/modal.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItem, moveItem, removeItem, setBun } from '../../services/constrSlice.js';
 import { useDrag, useDrop } from'react-dnd';
 import {  useGetIngredientsQuery } from '../../services/api';
 import {  nanoid } from '@reduxjs/toolkit';
-import { setIngredient } from '../../services/currentIngredientSlice.js';
 
 const SummaryElement = ({summ}) => {
     const [show,setShow] = React.useState(false)
@@ -43,7 +41,7 @@ const SummaryElement = ({summ}) => {
         </div>)
 }
 
-SummaryElement.propTypes = {
+/* SummaryElement.propTypes = {
     summ: PropTypes.number
 }
 
@@ -62,9 +60,9 @@ const constructPropTypes = PropTypes.shape({
        __v:PropTypes.number.isRequired
 
 })
-
+ */
 const HeadElement = ({bun}) => {
-         return (
+        return (
         <div className={styleBC.construct+' ml-6 mb-4 mt-25'}>
         <ConstructorElement
           key={nanoid()}
@@ -80,21 +78,14 @@ const HeadElement = ({bun}) => {
 
 const ScrollBoxElement=({item,index,id}) =>{ 
             const dispatch = useDispatch();
-            const ref = useRef(null)
-        
-            const [showItem,setShowItem] = React.useState(false)
-            const handleCloseModalItem = () => {
-                setShowItem(false)
-            }
+            
             const handleShowModalItem = (e) => {
                 console.log(e.target.type)
-                if (e.target.className === 'constructor-element__action pr-2'||e.target.className === 'constructor-element__price') {
+                const rect = e.target.getBoundingClientRect();
+                console.log('rect', rect)   
+                if (e.target.className === 'constructor-element__action pr-2'||e.target.className === 'constructor-element__price'||(rect.width===18&&rect.height<21)) {
                         dispatch(removeItem(item.key));
-                        
-                }else {
-                dispatch(setIngredient(item))
-                setShowItem(!showItem)
-                }
+                 }
             }
 
             const [{ handlerId }, drop] = useDrop({
@@ -104,46 +95,6 @@ const ScrollBoxElement=({item,index,id}) =>{
                   handlerId: monitor.getHandlerId(),
                 }
               },
-             // hover(item, monitor) {
-                //if (!ref.current) {
-                  //return
-                //}
-                //console.log('dragIndex', dragIndex, 'hoverIndex', hoverIndex)
-               // const dragIndex = item.index
-                //const hoverIndex = index
-                //console.log('dragIndex', dragIndex, 'hoverIndex', hoverIndex)
-                // Don't replace items with themselves
-                //if (dragIndex === hoverIndex) {
-                 // return
-                //}
-                // Determine rectangle on screen
-                //const hoverBoundingRect = ref.current?.getBoundingClientRect()
-                // Get vertical middle
-                //const hoverMiddleY =
-                 // (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-                // Determine mouse position
-                //const clientOffset = monitor.getClientOffset()
-                // Get pixels to the top
-                //const hoverClientY = clientOffset.y - hoverBoundingRect.top
-                // Only perform the move when the mouse has crossed half of the items height
-                // When dragging downwards, only move when the cursor is below 50%
-                // When dragging upwards, only move when the cursor is above 50%
-                // Dragging downwards
-                //if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                 // return
-                //}
-                // Dragging upwards
-                //if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                 // return
-                //}
-                // Time to actually perform the action
-                //dispatch(moveItem({'from':dragIndex, 'to':hoverIndex}))
-                // Note: we're mutating the monitor item here!
-                // Generally it's better to avoid mutations,
-                // but it's good here for the sake of performance
-                // to avoid expensive index searches.
-                //item.index = hoverIndex
-             // },
               drop: (item, monitor) => {
                 if (index===item.index) return
                 dispatch(moveItem({'from':item.index, 'to':index}))
@@ -160,8 +111,6 @@ const ScrollBoxElement=({item,index,id}) =>{
                 isDragging: monitor.isDragging(),
               }),
             })
-           // const opacity = isDragging ? 0 : 1
-            //drag(drop(ref))
             console.log('drag', isDragging)
             return(
                 <>
@@ -174,13 +123,6 @@ const ScrollBoxElement=({item,index,id}) =>{
                     thumbnail={item.image}
                     extraClass='pt-4 pb-4 pl-6 pr-8'
                 />
-                <Modal
-                        show={showItem}
-                        header='Детали ингридиента'
-                        handleModalClose={handleCloseModalItem}                
-                >
-                    <IngredientDetails/>
-                </Modal>
                 </div>
                 </div>
                 </>
@@ -188,12 +130,12 @@ const ScrollBoxElement=({item,index,id}) =>{
                 )
 }
         
-
+/* 
 ScrollBoxElement.propTypes = {
     dataList: PropTypes.arrayOf(constructPropTypes)
     
 }
-
+ */
 const BottomElement = ({bun}) => {
     return (
                     <ConstructorElement
@@ -209,9 +151,9 @@ const BottomElement = ({bun}) => {
     )        
 }
 
-BottomElement.propTypes ={
-    bun : constructPropTypes
-}
+//BottomElement.propTypes ={
+   // bun : constructPropTypes
+//}
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -229,68 +171,23 @@ const BurgerConstructor = () => {
             if (item.type==='bun') {
                 dispatch(setBun(item))
             }else{
-            //console.log('drop', item, 'type:', type);
-             // if (item.type === 'construct') {
                 if (!item.inElement) {
                     dispatch(addItem(item)) 
-                } //else dispatch(moveItem({"from":item.index, "to":index}))
-                
-
-            //    return
-            //  }  
-              
+                } 
+           
             }
         },
-        /*hover(item, monitor) {
-            //if (!ref.current) {
-              //return
-            //}
-            const dragIndex = item.index
-            const hoverIndex = index
-            // Don't replace items with themselves
-            if (dragIndex === hoverIndex) {
-              return
-            }
-            // Determine rectangle on screen
-            const hoverBoundingRect = ref.current?.getBoundingClientRect()
-      // Get vertical middle
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      // Determine mouse position
-      const clientOffset = monitor.getClientOffset()
-      // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
-      }
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
-      }
-      // Time to actually perform the action
-      moveCard(dragIndex, hoverIndex)
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      item.index = hoverIndex
-    } */
           
         });
        
-    //const dataItems = useSelector(state => state.ingredient.ingredients);
     const dataItems = data.data;
     if(!dataItems.length) return null;
     
-    const bunItem = useMemo(() => {
-        const bun = dataItems.find((item)=>item.type==='bun')
-        dispatch(setBun(bun))
-        return bun
-    }, [dataItems]  );
+    //const bunItem = useMemo(() => {
+      //  const bun = dataItems.find((item)=>item.type==='bun')
+        //dispatch(setBun(bun))
+        //return bun
+    //}, [dataItems]  );
     
     const bun = useSelector(state => state.constr.bun);
     const elements = useSelector(state => state.constr.elements);

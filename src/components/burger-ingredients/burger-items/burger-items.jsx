@@ -4,7 +4,11 @@ import PropTypes, { element } from 'prop-types'
 import { useDrag } from 'react-dnd'
 import { nanoid } from '@reduxjs/toolkit'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import IngredientDetails from '../../modal/ingredient-details.jsx';
+import { setIngredient } from '../../../services/currentIngredientSlice.js';
+import Modal from '../../modal/modal.jsx'
+
 
 const ItemTypeHeader = ({itype,id}) => {
     const what = [{
@@ -28,6 +32,7 @@ const ItemTypeHeader = ({itype,id}) => {
     )
             
 }
+
 const constructPropTypes = PropTypes.shape({
     _id:PropTypes.string.isRequired,
     name:PropTypes.string.isRequired,
@@ -45,7 +50,17 @@ const constructPropTypes = PropTypes.shape({
   })
   
 const ItemElement = ({item}) => {
-    
+    const dispatch = useDispatch();
+            
+            const [showItem,setShowItem] = React.useState(false)
+            const handleCloseModalItem = () => {
+                setShowItem(false)
+            }
+            const handleShowModalItem = () => {
+                dispatch(setIngredient(item))
+                setShowItem(!showItem)
+            }
+
     const [, dragRef ] = useDrag(() => ({
         type: 'construct',
         item: item 
@@ -61,7 +76,7 @@ elements.forEach(element => {
 } 
 console.log(count)  
 return (
-    <div key={nanoid} draggable ref={dragRef} className={styleBurgerItem.item+' ml-4 mb-8'}>
+    <div key={nanoid} draggable ref={dragRef} className={styleBurgerItem.item+' ml-4 mb-8'} onClick={handleShowModalItem}>
               <img className='ml-4 mb-1' src={item.image}/>
               <span className={styleBurgerItem.component}>
                   <p className='text text_type_digits-default'>
@@ -74,6 +89,14 @@ return (
                   {item.name}
               </p>
               <Counter count={count} size="small" className={styleBurgerItem.item} />
+              <Modal
+                        show={showItem}
+                        header='Детали ингридиента'
+                        handleModalClose={handleCloseModalItem}                
+                >
+                    <IngredientDetails/>
+                </Modal>
+                
           </div>     
           
 )
@@ -96,8 +119,7 @@ return (
 ItemType.propTypes = {
     dataList: PropTypes.arrayOf(constructPropTypes),
     itype: PropTypes.string.isRequired  
-  }
-  
+  } 
 const BurgerItems = ({dataItems}) => {
 
     return (

@@ -4,7 +4,13 @@ import { element } from 'prop-types'
 export const constrSlice = createSlice({
   name: 'constr',
   initialState:{
-    bun:{},
+    bun:{
+        type:'bun',
+        name:'Перетащите сюда вашу булку и ингридиенты!',
+        image:'https://code.s3.yandex.net/react/code/bun-02.png',
+        price:'',
+        id:'_'
+    },
     elements:[],
     },
   reducers: {

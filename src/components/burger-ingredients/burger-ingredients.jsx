@@ -1,5 +1,5 @@
 import React,{useMemo} from 'react';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import {Tab}  from '@ya.praktikum/react-developer-burger-ui-components';
 import styleBI from './burger-ingridients.module.css'
 import BurgerItems from './burger-items/burger-items';
@@ -29,6 +29,7 @@ const SelectTab = () =>{
         )
     
 }
+/* 
 const constructPropTypes = PropTypes.shape({
   _id:PropTypes.string.isRequired,
   name:PropTypes.string.isRequired,
@@ -44,7 +45,7 @@ const constructPropTypes = PropTypes.shape({
   __v:PropTypes.number.isRequired
 
 })
-
+ */
 const BurgerIngredients = () => {
   const { isLoading, data, isError } = useGetIngredientsQuery();
   const dispatch = useDispatch();
@@ -101,8 +102,8 @@ const BurgerIngredients = () => {
        </> 
      )
 }
-BurgerIngredients.propTypes = {
+/* BurgerIngredients.propTypes = {
   dataItems: PropTypes.arrayOf(constructPropTypes)
 
-}
+} */
 export default BurgerIngredients
