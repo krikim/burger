@@ -1,10 +1,12 @@
 import React from 'react';
 import { } from '@ya.praktikum/react-developer-burger-ui-components';
 import styleID from './ingredient-details.module.css'
+import { useSelector } from 'react-redux';
 
 
-const IngredientDetails = ({ ingredientItem }) => {
+const IngredientDetails = () => {
 
+        const ingredientItem = useSelector(state => state.current.ingredient);
         return (
                 <>       
                 <img className={styleID.img} src={ingredientItem.image} />
