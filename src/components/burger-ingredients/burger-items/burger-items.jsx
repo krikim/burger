@@ -1,8 +1,16 @@
 import {Counter, CurrencyIcon}  from '@ya.praktikum/react-developer-burger-ui-components'
 import styleBurgerItem from './burger-items.module.css'
-import PropTypes from 'prop-types'
+import PropTypes, { element } from 'prop-types'
+import { useDrag } from 'react-dnd'
+import { nanoid } from '@reduxjs/toolkit'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import IngredientDetails from '../../modal/ingredient-details.jsx';
+import { setIngredient } from '../../../services/currentIngredientSlice.js';
+import Modal from '../../modal/modal.jsx'
 
-const ItemTypeHeader = ({itype}) => {
+
+const ItemTypeHeader = ({itype,id}) => {
     const what = [{
                     type:"bun",
                     name:"Булки"
@@ -16,7 +24,7 @@ const ItemTypeHeader = ({itype}) => {
                     name:"Начинки"
                 }]
     return (
-            <h2 className={styleBurgerItem.header+' text text_type_main-medium mb-6 mt-2'}>
+            <h2 className={styleBurgerItem.header+' text text_type_main-medium mb-6 mt-2'} id={id}>
                 {
                     what.find((item)=>itype===item.type).name
                 }
@@ -24,6 +32,7 @@ const ItemTypeHeader = ({itype}) => {
     )
             
 }
+
 const constructPropTypes = PropTypes.shape({
     _id:PropTypes.string.isRequired,
     name:PropTypes.string.isRequired,
@@ -40,11 +49,34 @@ const constructPropTypes = PropTypes.shape({
   
   })
   
-  
-const ItemType = ({dataItems, itype}) => {
-    const bunData = dataItems.filter((item)=>item.type === itype);
-    const itemData = bunData.map(item =>
-          <div key={item._id} className={styleBurgerItem.item+' ml-4 mb-8'}>
+const ItemElement = ({item}) => {
+    const dispatch = useDispatch();
+            
+            const [showItem,setShowItem] = React.useState(false)
+            const handleCloseModalItem = () => {
+                setShowItem(false)
+            }
+            const handleShowModalItem = () => {
+                dispatch(setIngredient(item))
+                setShowItem(!showItem)
+            }
+
+    const [, dragRef ] = useDrag(() => ({
+        type: 'construct',
+        item: item 
+    })
+)
+const elements = useSelector(state=>state.constr.elements);
+let count = 0;
+console.log(elements.length)
+if (elements.length) { 
+elements.forEach(element => {
+    item._id === element._id && count++
+});
+} 
+console.log(count)  
+return (
+    <div key={nanoid} draggable ref={dragRef} className={styleBurgerItem.item+' ml-4 mb-8'} onClick={handleShowModalItem}>
               <img className='ml-4 mb-1' src={item.image}/>
               <span className={styleBurgerItem.component}>
                   <p className='text text_type_digits-default'>
@@ -56,13 +88,26 @@ const ItemType = ({dataItems, itype}) => {
               <p className='text text_type_main-small mt-1'>
                   {item.name}
               </p>
-              <Counter count={1} size="small" className={styleBurgerItem.item} />
+              <Counter count={count} size="small" className={styleBurgerItem.item} />
+              <Modal
+                        show={showItem}
+                        header='Детали ингридиента'
+                        handleModalClose={handleCloseModalItem}                
+                >
+                    <IngredientDetails/>
+                </Modal>
+                
           </div>     
-          )
-      
-      
+          
+)
+}
 
-    return (
+const ItemType = ({dataItems, itype}) => {
+    const bunData = dataItems.filter((item)=>item.type === itype);
+    if (bunData.length === 0) return null;
+    const itemData = bunData.map(item =><ItemElement key={nanoid()} item={item}/>)
+      
+return (
             <>
                 <div className={styleBurgerItem.component}>
                     {itemData}
@@ -70,21 +115,21 @@ const ItemType = ({dataItems, itype}) => {
             </>
     )
 }
+
 ItemType.propTypes = {
     dataList: PropTypes.arrayOf(constructPropTypes),
     itype: PropTypes.string.isRequired  
-  }
-  
+  } 
 const BurgerItems = ({dataItems}) => {
 
     return (
         <>
-            <ItemTypeHeader itype='bun' />
-            <ItemType key= {1} itype='bun' dataItems={dataItems}/>
-            <ItemTypeHeader itype='sauce' />
+            <ItemTypeHeader itype='bun' id='itemBunId' />
+            <ItemType key= {1} itype='bun'  dataItems={dataItems}/>
+            <ItemTypeHeader itype='sauce'  id='itemSauceId' />
             <ItemType key = {2} itype='sauce' dataItems={dataItems}/>
-            <ItemTypeHeader itype='main' />
-            <ItemType key={3} itype='main' dataItems={dataItems}/>
+            <ItemTypeHeader itype='main' id='itemMainId' />
+            <ItemType key={3} itype='main'  dataItems={dataItems}/>
         </>
     )
 }
