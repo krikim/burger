@@ -3,9 +3,10 @@ import { burgerApi } from "./api";
 import { constrSlice } from "./constrSlice";
 import { ingredientSlice } from "./ingredientSlice";
 import { currentIngredientSlice } from "./currentIngredientSlice";
+import { userSlice } from "./userSlice";
 
 
-export const rootReducer = combineSlices(burgerApi,constrSlice, ingredientSlice, currentIngredientSlice);
+export const rootReducer = combineSlices(burgerApi,constrSlice, ingredientSlice, currentIngredientSlice, userSlice);
 
 export const configureStore = (initialState) => {
     const store = createStore({

@@ -8,8 +8,8 @@ export const ingredientSlice = createSlice({
   currentTab: 'first',
   reducers: {
     setIngredients:{
-        reducer: (state, action) => (state.ingredients = action.payload),
-        prepare: (items) => ({payload: [...items, items.forEach((...item)=>({counter: 0}))]}),
+        reducer: (state, action) => {state.ingredients=action.payload},
+       // prepare: (items) => ({payload: [...items, items.forEach((...item)=>({counter: 0}))]}),
     },
     setTab: (state, action) => {
         state.currentTab = action.payload
