@@ -16,4 +16,17 @@
     height: 256px;
     width: auto;
 }
+.name{
+    text-align: center;
+    margin-left: auto;
+}
+.wrapper{
+    height: 100%;
+    width: 100%;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center
+}
 

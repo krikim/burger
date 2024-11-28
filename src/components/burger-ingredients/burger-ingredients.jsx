@@ -6,7 +6,7 @@ import BurgerItems from './burger-items/burger-items';
 import { useGetIngredientsQuery } from '../../services/api';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { useDispatch, useSelector } from'react-redux'
-import { setTab } from '../../services/ingredientSlice';
+import { setTab,setIngredients } from '../../services/ingredientSlice';
 
 const SelectTab = () =>{
         const current = useSelector(state => state.ingredient.currentTab);
@@ -65,7 +65,7 @@ const BurgerIngredients = () => {
     let rectBun = itemBunHead.getBoundingClientRect();
     let rectSauce = itemSauceHead.getBoundingClientRect();
     
-    console.log(rectBun.top+':'+rectSauce.top+':'+rectMain.top+':'+rectTab.bottom)
+    //console.log(rectBun.top+':'+rectSauce.top+':'+rectMain.top+':'+rectTab.bottom)
     
     if(rectBun.top-rectTab.bottom<30){
       dispatch(setTab('one'))

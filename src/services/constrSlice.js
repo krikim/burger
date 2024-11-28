@@ -35,7 +35,6 @@ export const constrSlice = createSlice({
   },
 })
 
-// Action creators are generated for each case reducer function
 export const { setBun, addItem, removeItem, moveItem } = constrSlice.actions
 
 export default constrSlice.reducer

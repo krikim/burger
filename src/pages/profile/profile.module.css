@@ -1,0 +1,35 @@
+.wrapper{
+    height: 100%;
+    width: 850px;
+    margin:auto;
+    display:flex;
+    flex-direction:row;
+    min-height: 600px;
+    justify-content: end;
+    align-items: start;
+}
+.part{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    justify-content: center;
+    align-items: start;
+}
+.link{
+    text-decoration: none;
+}
+.text{
+    max-width: 300px;
+    word-wrap: break-word;
+    color: gray;
+}
+.buttons{
+    display: flex;
+    justify-content:end;
+    align-items: end ;
+    margin-top: 10px;
+    width: 100%;
+}
+.active{
+    color: white;
+}

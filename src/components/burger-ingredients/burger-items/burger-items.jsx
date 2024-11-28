@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import IngredientDetails from '../../modal/ingredient-details.jsx';
 import { setIngredient } from '../../../services/currentIngredientSlice.js';
 import Modal from '../../modal/modal.jsx'
+import { useLocation,Link } from 'react-router-dom'
 
 
 const ItemTypeHeader = ({itype,id}) => {
@@ -52,7 +53,7 @@ const constructPropTypes = PropTypes.shape({
 const ItemElement = ({item}) => {
     const dispatch = useDispatch();
             
-            const [showItem,setShowItem] = React.useState(false)
+          /*  const [showItem,setShowItem] = React.useState(false)
             const handleCloseModalItem = () => {
                 setShowItem(false)
             }
@@ -60,7 +61,7 @@ const ItemElement = ({item}) => {
                 dispatch(setIngredient(item))
                 setShowItem(!showItem)
             }
-
+*/
     const [, dragRef ] = useDrag(() => ({
         type: 'construct',
         item: item 
@@ -68,15 +69,27 @@ const ItemElement = ({item}) => {
 )
 const elements = useSelector(state=>state.constr.elements);
 let count = 0;
-console.log(elements.length)
+//console.log(elements.length)
 if (elements.length) { 
 elements.forEach(element => {
     item._id === element._id && count++
 });
 } 
-console.log(count)  
+const location = useLocation();
+const itemId = item._id
+//console.log(count)  
 return (
-    <div key={nanoid} draggable ref={dragRef} className={styleBurgerItem.item+' ml-4 mb-8'} onClick={handleShowModalItem}>
+    <Link
+        key={itemId}
+        // Тут мы формируем динамический путь для нашего ингредиента
+        to={`/items/${itemId}`}
+        // а также сохраняем в свойство background роут,
+        // на котором была открыта наша модалка
+        state={{ background: location }}
+        className={styleBurgerItem.link}
+        item = {item}
+    >
+    <div key={nanoid} draggable ref={dragRef} className={styleBurgerItem.item+' ml-4 mb-8'} >
               <img className='ml-4 mb-1' src={item.image}/>
               <span className={styleBurgerItem.component}>
                   <p className='text text_type_digits-default'>
@@ -89,19 +102,20 @@ return (
                   {item.name}
               </p>
               <Counter count={count} size="small" className={styleBurgerItem.item} />
-              <Modal
+                
+          </div>   
+          </Link>  
+          
+)
+}
+{/* <Modal
                         show={showItem}
                         header='Детали ингридиента'
                         handleModalClose={handleCloseModalItem}                
                 >
                     <IngredientDetails/>
                 </Modal>
-                
-          </div>     
-          
-)
-}
-
+ */}              
 const ItemType = ({dataItems, itype}) => {
     const bunData = dataItems.filter((item)=>item.type === itype);
     if (bunData.length === 0) return null;
