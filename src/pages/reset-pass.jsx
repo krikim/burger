@@ -24,7 +24,6 @@ const ResetPass = () => {
                  }
            })         
     }
-    //console.log('forgotPass:',forgotPass,typeof(forgotPass))
     return (
         <>
         

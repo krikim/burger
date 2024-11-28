@@ -1,20 +1,6 @@
 import { createApi,fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BURGER_API_URL = 'https://norma.nomoreparties.space/api' 
-// Эндпоинт
-// POST https://norma.nomoreparties.space/api/orders
-
-// Тело запроса
-//{ 
-//    "ingredients": ["609646e4dc916e00276b286e","609646e4dc916e00276b2870"]
-//}
-// {
-//     "name": "Краторный метеоритный бургер",
-//     "order": {
-//         "number": 6257
-//     },
-//     "success": true
-//   }
 const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
   };
@@ -30,8 +16,6 @@ const checkResponse = (res) => {
       }),
     })
     .then(checkResponse)
-     // !! Важно для обновления токена в мидлваре, чтобы запись
-     // была тут, а не в fetchWithRefresh
     .then((refreshData) => {
       if (!refreshData.success) {
           return Promise.reject(refreshData);
@@ -68,8 +52,6 @@ export const getUser = async () =>{
     },
   })
   }catch(error){
-   // localStorage.removeItem('accessToken')
-    //localStorage.removeItem('refreshToken')
     throw error;
       
 }
@@ -86,8 +68,6 @@ export const updateUser = async ({email,pass,name}) =>{
     body: JSON.stringify({'email':email,'name':name,'password':pass})
   })
   }catch(error){
-    //localStorage.removeItem('accessToken')
-    //localStorage.removeItem('refreshToken')
     throw error;
       
 }
@@ -121,8 +101,6 @@ export const signOut = async () => {
   return await checkResponse(res);
 
   }catch(error){
-   // localStorage.removeItem('accessToken')
-   // localStorage.removeItem('refreshToken')
     throw error;
       
 }
@@ -138,8 +116,6 @@ export const register = async ({email, password,name}) => {
     body: JSON.stringify({'email':email,'password':password,'name':name})
   })
   }catch(error){
-    //localStorage.removeItem('accessToken')
-    //localStorage.removeItem('refreshToken')
     throw error;
       
 }
@@ -155,8 +131,6 @@ export const forgot = async ({email}) => {
   })
   return await checkResponse(res);
   }catch(error){
-    //localStorage.removeItem('accessToken')
-    //localStorage.removeItem('refreshToken')
     throw error;
       
 }
@@ -173,8 +147,6 @@ export const reset = async ({pass,token}) => {
   })
   return await checkResponse(res);
   }catch(error){
-    //localStorage.removeItem('accessToken')
-    //localStorage.removeItem('refreshToken')
     throw error;
       
 }

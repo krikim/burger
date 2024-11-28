@@ -5,7 +5,7 @@ import { signIn } from "../services/api.js"
 import { useDispatch } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 import { setAuth, setUser } from "../services/userSlice.js";
-import { useRef, useState } from "react";
+import { useRef, } from "react";
 
 const SignIn = () => {
 
@@ -13,8 +13,6 @@ const SignIn = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const form = useRef(null)
-   // const [email,setEmail] = useState('');
-    //const [password,setPassword] = useState('');
     
     const handleClick = (e) => {
         e.preventDefault()
@@ -43,12 +41,6 @@ const SignIn = () => {
         const { from } = location.state || {from: {pathname: '/'}}
         navigate({from});
         }
-   /* const handlePass = (e) =>{
-        setPassword(e.target.value)
-    }
-    const handleEmail = (e) =>{
-        set(e.target.value)
-    }*/
     
     return (
         

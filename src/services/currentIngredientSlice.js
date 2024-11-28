@@ -13,7 +13,6 @@ export const currentIngredientSlice = createSlice({
 },
   })
 
-// Action creators are generated for each case reducer function
 export const {  setIngredient, } = currentIngredientSlice.actions
 
 export default currentIngredientSlice.reducer
