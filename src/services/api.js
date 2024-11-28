@@ -15,7 +15,7 @@ const BURGER_API_URL = 'https://norma.nomoreparties.space/api'
 //     },
 //     "success": true
 //   }
-const checkReponse = (res) => {
+const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
   };
   
@@ -29,7 +29,7 @@ const checkReponse = (res) => {
         token: localStorage.getItem("refreshToken"),
       }),
     })
-    .then(checkReponse)
+    .then(checkResponse)
      // !! Важно для обновления токена в мидлваре, чтобы запись
      // была тут, а не в fetchWithRefresh
     .then((refreshData) => {
@@ -45,13 +45,13 @@ const checkReponse = (res) => {
   export const fetchWithRefresh = async (url, options) => {
     try {
       const res = await fetch(url, options);
-      return await checkReponse(res);
+      return await checkResponse(res);
     } catch (err) {
       if (err.message === "jwt expired") {
         const refreshData = await refreshToken(); //обновляем токен
         options.headers.authorization = refreshData.accessToken;
         const res = await fetch(url, options); //повторяем запрос
-        return await checkReponse(res);
+        return await checkResponse(res);
       } else {
         return Promise.reject(err);
       }
@@ -118,7 +118,7 @@ export const signOut = async () => {
     },
     body: JSON.stringify({token: localStorage.getItem('refreshToken')})
   })
-  return await checkReponse(res);
+  return await checkResponse(res);
 
   }catch(error){
    // localStorage.removeItem('accessToken')
@@ -153,7 +153,7 @@ export const forgot = async ({email}) => {
     },
     body: JSON.stringify({'email':email})
   })
-  return await checkReponse(res);
+  return await checkResponse(res);
   }catch(error){
     //localStorage.removeItem('accessToken')
     //localStorage.removeItem('refreshToken')
@@ -171,7 +171,7 @@ export const reset = async ({pass,token}) => {
     },
     body: JSON.stringify({'password':pass,'token':token})
   })
-  return await checkReponse(res);
+  return await checkResponse(res);
   }catch(error){
     //localStorage.removeItem('accessToken')
     //localStorage.removeItem('refreshToken')

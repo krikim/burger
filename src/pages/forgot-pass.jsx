@@ -3,14 +3,18 @@ import { Link } from "react-router-dom"
 import styleFP from "./forgot-pass.module.css"
 import { forgot } from "../services/api"
 import { useNavigate } from "react-router-dom"
+import { useRef } from "react"
 const ForgotPass = () => {
+    const form = useRef(null)
     const navigate = useNavigate()
-    const handleClick= () =>{
-        const email = document.getElementsByName('emailForgot')[0].value
+    const handleClick= (e) =>{
+        e.preventDefault()
+        const email = form.current[0].value
            forgot({email})
            .then((res)=>{
                  if (res.success){
                     console.log(res.message)
+                    localStorage.setItem('forgotPass',true)
                     navigate('/reset-pass',{replace:true})
                  }
            })         
@@ -21,20 +25,22 @@ const ForgotPass = () => {
                 <p className="text text_type_main-medium mb-6">
                         Восстановление пароля
                 </p>
+                <form ref={form} onSubmit={handleClick}>
                 <EmailInput
                     name={'emailForgot'}
                     placeholder="Укажите Email"
                     extraClass="mb-6"
                 />
                 <Button 
-                    htmlType="button" 
+                    htmlType="submit" 
                     type="primary" 
                     size="medium"
                     extraClass="mb-20"
-                    onClick={handleClick}
+                    
                 >
                     Восстановить
                 </Button>
+                </form>
                 <p className="text text_type_main-default">
                     Вспомнили?&nbsp;
                     <Link className={styleFP.text} to="/signin">

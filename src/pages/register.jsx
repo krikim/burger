@@ -4,15 +4,17 @@ import styleReg from "./register.module.css"
 import { useDispatch } from "react-redux"
 import { register } from "../services/api"
 import { setUser } from "../services/userSlice"
+import { useRef } from "react"
 const Register = () => {
     const dispatch = useDispatch()
     const location = useLocation()
+    const form = useRef()
         
     const handleClick = (e) => {
         e.preventDefault()
-        const email=document.getElementsByName('emailReg')[0].value
-        const password=document.getElementsByName('passReg')[0].value
-        const name = document.getElementsByName('nameReg')[0].value
+        const email=form.current[0].value
+        const password=form.current[1].value
+        const name = form.current[2].value
         console.log('cred:',email,password)
         register({email,password,name})
         .then(res=>{
@@ -49,6 +51,7 @@ const Register = () => {
                         Регистрация
     
                 </p>
+                <form ref={form} onSubmit={handleClick}>
                 <Input
                     name={'nameReg'}
                     placeholder="Имя"
@@ -65,20 +68,22 @@ const Register = () => {
                     extraClass="mb-6"
                 />
                 <Button 
-                    htmlType="button" 
+                    htmlType="submit" 
                     type="primary" 
                     size="medium"
                     extraClass="mb-20"
-                    onClick={handleClick}
+                    
                 >
                     Зарегистрироваться
                 </Button>
+                </form>
                 <p className="text text_type_main-default">
                     Уже зарегистрированы?&nbsp;
                     <Link className={styleReg.text} to="/signin">
                         Войти
                     </Link>
                 </p>
+                
                 
             </div>
         </>

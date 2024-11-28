@@ -24,6 +24,7 @@ export const userSlice = createSlice({
   initialState: {
     isAuthChecked:false,
     user:null,
+    forgotPass:false,
     },
   reducers: {
     setUser:{
@@ -34,11 +35,17 @@ export const userSlice = createSlice({
         state.isAuthChecked = action.payload
       } 
     },
+    setForgotPass: {
+        reducer: (state,action)=>{
+                     state.forgotPass = action.payload
+                },
+        
+      }
     
 },
 })
 
 // Action creators are generated for each case reducer function
-export const {  setUser, setAuth } = userSlice.actions
+export const {  setUser, setAuth, setForgotPass } = userSlice.actions
 
 export default userSlice.reducer

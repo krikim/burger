@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 import styleProfile from "./profile.module.css"
 import ProfileEdit from "./profile-edit"
 import ProfileOrders from "./profile-orders"
-/* eslint react/prop-types: 0 */
+
 const ProfileOut = ({element}) => {
     const activeStyle = styleProfile.link+" text text_type_main-default p-2 "+styleProfile.active
     const inactiveStyle = styleProfile.link+" text text_type_main-default p-2"

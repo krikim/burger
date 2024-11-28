@@ -9,17 +9,12 @@ const Protected = ({onlyUnAuth= false, component})=>{
     if (!isAuthChecked) return <p>User Загрузка...</p>
 
     if (!onlyUnAuth && !user){
-        //Авторизованного, но не авторизовался
-        console.log(1,location);
         return <Navigate to="/signin" state={{from:location}} />
     } 
     if (onlyUnAuth && user){
-        console.log(2);
-        //Не авторизованного, но авторизовался
         const { from } = location.state || {from: {pathname: '/'}}
         return <Navigate to={from} />
     }
-    //остальные случаи, идет туда куда хотел
     return component
 }
 

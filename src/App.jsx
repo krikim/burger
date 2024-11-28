@@ -25,6 +25,7 @@ const App = () => {
 
   useEffect(()=>{
     dispatch(checkUserAuth());
+    //localStorage.setItem('forgotPass',false);
    console.log('effect') 
   },[dispatch])
 
@@ -43,7 +44,7 @@ const App = () => {
         <AppHeader />
           <main className={styleApp.wrapper}>
             <Routes location={background||location}  >
-              <Route path='/' element={<OnlyAuth component={<Home/>}/>}></Route>
+              <Route path='/' element={<Home/>}></Route>
               <Route path='/items/:itemId' element={<OnlyAuth component={<IngredientDetails/>}/>} />
               <Route path='/signin' element={<OnlyUnAuth component={<SignIn/>}/>}/>
               <Route path='/signout' element={<OnlyAuth component={<SignOut/>}/>}/>

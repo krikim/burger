@@ -5,18 +5,22 @@ import { signIn } from "../services/api.js"
 import { useDispatch } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
 import { setAuth, setUser } from "../services/userSlice.js";
-
+import { useRef, useState } from "react";
 
 const SignIn = () => {
 
     const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
+    const form = useRef(null)
+   // const [email,setEmail] = useState('');
+    //const [password,setPassword] = useState('');
     
     const handleClick = (e) => {
         e.preventDefault()
-        const email=document.getElementsByName('emailLogin')[0].value
-        const password=document.getElementsByName('emailPass')[0].value
+        console.log('cred:',form)
+        const email=form.current[0].value;
+        const password=form.current[1].value;
         console.log('cred:',email,password)
         signIn({email,password})
         .then(res=>{
@@ -39,10 +43,17 @@ const SignIn = () => {
         const { from } = location.state || {from: {pathname: '/'}}
         navigate({from});
         }
+   /* const handlePass = (e) =>{
+        setPassword(e.target.value)
+    }
+    const handleEmail = (e) =>{
+        set(e.target.value)
+    }*/
     
     return (
         
             <>
+            <form ref={form} onSubmit={handleClick}>
             <div className={styleSI.wrapper}>
                 <p className="text text_type_main-medium mb-6">
                         Вход
@@ -51,19 +62,21 @@ const SignIn = () => {
                     name={'emailLogin'}
                     placeholder="Email"
                     extraClass="mb-6"
-                    defaultValue=''
+                   // onChange={handleEmail}
+                    
                 />
                 <PasswordInput
                     name={'emailPass'}
                     extraClass="mb-6"
-                    defaultValue=''
+                  //  onChange={handlePass}
+                
                 />
                 <Button 
-                    htmlType="button" 
+                    htmlType="submit" 
                     type="primary" 
                     size="medium"
                     extraClass="mb-20"
-                    onClick={handleClick}
+                
                 >
                     Войти
                 </Button>
@@ -80,7 +93,7 @@ const SignIn = () => {
                     </Link>
                 </p>
             </div>
-          
+            </form>
         </>
     )
 

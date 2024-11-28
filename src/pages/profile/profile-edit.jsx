@@ -1,17 +1,19 @@
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useDispatch } from "react-redux"
 import { setUser } from "../../services/userSlice"
 import { updateUser } from "../../services/api"
 import { EmailInput,PasswordInput,Button, Input } from "@ya.praktikum/react-developer-burger-ui-components"
+import styleProfile from './profile.module.css'
 
 const ProfileEdit = () => {
 const user = useSelector(state=>state.user.user)
     const [showEdit,setShowEdit] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
+    const form = useRef();
+    
     const handleEdit = (e)=> {
         e.preventDefault()
         if (e.target.value.length>2){
@@ -20,19 +22,17 @@ const user = useSelector(state=>state.user.user)
         
     }
     const handleCancel = (e) =>{
-        const email=document.getElementsByName('emailPro')[0]
-        const password=document.getElementsByName('passwordPro')[0]
-        const name = document.getElementsByName('namePro')[0]
-        password.value='';
-        email.value=user.email;
-        name.value=user.name;
+        e.preventDefault()
+        form.current[2].value='';
+        form.current[1].value=user.email;
+        form.current[0].value=user.name;
     }
     const handleClick = (e)=>{
         e.preventDefault()
-        const email=document.getElementsByName('emailPro')[0].value
-        const password=document.getElementsByName('passwordPro')[0].value
-        const name = document.getElementsByName('namePro')[0].value
-        console.log('cred:',email,password)
+        const name=form.current[0].value
+        const email=form.current[1].value
+        const password=form.current[2].value
+
         updateUser({email,password,name})
         .then(res=>{
             console.log(res)
@@ -44,6 +44,7 @@ const user = useSelector(state=>state.user.user)
     }
 return(
             <>
+                <form ref={form} onSubmit={handleClick} onReset={handleCancel}>
                 <Input
                     name={'namePro'}
                     placeholder="Имя"
@@ -52,6 +53,7 @@ return(
                     icon="EditIcon"
                     onChange={handleEdit}
                     defaultValue={user.name}
+                    
                 />
                 <EmailInput
                     name={'emailPro'}
@@ -60,20 +62,22 @@ return(
                     icon="EditIcon"
                     onChange={handleEdit}
                     defaultValue={user.email}
+                    
                 />
                 <PasswordInput
                     name={'passwordPro'}
                     extraClass="mb-6"
                     icon="EditIcon"
                     onChange={handleEdit}
+                
                 />
                 
                {showEdit&& <div className={styleProfile.buttons}>
                     <Button
-                        htmlType="submit"
+                        htmlType="reset"
                         type="secondary"
                         size="large"
-                        onClick={handleCancel}
+                        //onClick={handleCancel}
                     >
                         Отмена
                     </Button>
@@ -81,13 +85,14 @@ return(
                         htmlType="submit"
                         type="primary"
                         size="large"
-                        onClick={handleClick}
+                       // onClick={handleClick}
                     >
                         Сохранить
                     </Button>
                 </div>
                 
                 }
+                </form>
             </>
 )
 }
