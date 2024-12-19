@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
-import AppHeader from './components/app-header/app-header.jsx';
+import  { useEffect } from 'react';
+import AppHeader from './components/app-header/app-header.tsx';
 import styleApp from './App.module.css'
-import { configureStore } from './services/store.js';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import Home from './pages/home.jsx';
+import {  useDispatch } from 'react-redux';
+import Home from './pages/home.js';
 import { Routes,Route,useLocation,useNavigate } from 'react-router-dom';
-import IngredientDetails from './components/modal/ingredient-details.jsx';
-import Modal from './components/modal/modal.jsx';
-import SignIn from './pages/signin.jsx';
-import Register from './pages/register.jsx';
-import ForgotPass from './pages/forgot-pass.jsx';
-import ResetPass from './pages/reset-pass.jsx';
-import Profile, { Orders } from './pages/profile/profile.jsx';
+import IngredientDetails from './components/modal/ingredient-details.js';
+import Modal from './components/modal/modal.js';
+import SignIn from './pages/signin.js';
+import Register from './pages/register.js';
+import ForgotPass from './pages/forgot-pass.js';
+import ResetPass from './pages/reset-pass.js';
+import Profile, { Orders } from './pages/profile/profile.js';
+// @ts-ignore
 import { checkUserAuth } from './services/userSlice.js';
-import { OnlyAuth, OnlyUnAuth } from './components/protected-route.jsx';
-import SignOut from './pages/profile/signout.jsx';
-import NotFound404 from './pages/404.jsx';
+import { OnlyAuth, OnlyUnAuth } from './components/protected-route.js';
+import SignOut from './pages/profile/signout.js';
+import NotFound404 from './pages/404.js';
 
 const App = () => {
   const location = useLocation();
@@ -42,6 +42,7 @@ const App = () => {
   return (
     <>
         <AppHeader />
+
           <main className={styleApp.wrapper}>
             <Routes location={background||location}  >
               <Route path='/' element={<Home/>}></Route>

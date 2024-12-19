@@ -1,9 +1,14 @@
+import { FC } from "react"
 import { useSelector } from "react-redux"
 import { Navigate, useLocation } from "react-router-dom"
 
-const Protected = ({onlyUnAuth= false, component})=>{
-    const user = useSelector(state=>state.user.user)
-    const isAuthChecked = useSelector(state=>state.user.isAuthChecked)
+interface IProtected{
+    onlyUnAuth?: boolean, 
+    component: React.ReactElement
+}
+const Protected:FC<IProtected> = ({onlyUnAuth= false, component})=>{
+    const user = useSelector((state:any)=>state.user.user)
+    const isAuthChecked:boolean = useSelector((state:any)=>state.user.isAuthChecked)
     const location = useLocation()
     console.log(user);
     if (!isAuthChecked) return <p>User Загрузка...</p>
@@ -19,6 +24,9 @@ const Protected = ({onlyUnAuth= false, component})=>{
 }
 
 export const OnlyAuth = Protected
-export const OnlyUnAuth = ({component}) => (
+interface IOnlyUnAuth {
+    component: React.ReactElement
+}
+export const OnlyUnAuth:FC<IOnlyUnAuth> = ({component}) => (
     <Protected onlyUnAuth={true} component={component} />
 )
