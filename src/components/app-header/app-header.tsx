@@ -1,9 +1,9 @@
-import {Logo,BurgerIcon, ListIcon, ProfileIcon, Button,}  from '@ya.praktikum/react-developer-burger-ui-components';
+import {Logo,BurgerIcon, ListIcon, ProfileIcon}  from '@ya.praktikum/react-developer-burger-ui-components';
 import navStyle from './app-header.module.css';
-import {  NavLink, useNavigate } from 'react-router-dom';
+import {  NavLink } from 'react-router-dom';
 
 function AppHeader () {
-    const menuItemStyle = navStyle.nav+' text text_type_main-small p-5 mr-2';
+    const menuItemStyle:string|null = navStyle.nav+' text text_type_main-small p-5 mr-2';
     return (
                     <>
                         <nav className={navStyle.nav+' pb-4 pt-4'}>

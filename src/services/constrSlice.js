@@ -1,5 +1,4 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
-import { element } from 'prop-types'
 
 export const constrSlice = createSlice({
   name: 'constr',

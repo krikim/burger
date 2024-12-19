@@ -1,74 +1,77 @@
 import { EmailInput,PasswordInput,Button } from "@ya.praktikum/react-developer-burger-ui-components"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, Location, NavigateFunction, useNavigate } from "react-router-dom"
 import styleSI from "./signin.module.css"
+// @ts-ignore
 import { signIn } from "../services/api.js"
 import { useDispatch } from "react-redux";
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+// @ts-ignore
 import { setAuth, setUser } from "../services/userSlice.js";
-import { useRef, } from "react";
+import {  FormEvent, useRef } from "react";
 
 const SignIn = () => {
 
     const dispatch = useDispatch()
-    const location = useLocation()
-    const navigate = useNavigate()
-    const form = useRef(null)
+    const location:Location = useLocation()
+    const navigate:NavigateFunction = useNavigate()
+    const form = useRef<any>(null)
     
-    const handleClick = (e) => {
+    const handleClick = (e:FormEvent) => {
         e.preventDefault()
         console.log('cred:',form)
         const email=form.current[0].value;
         const password=form.current[1].value;
         console.log('cred:',email,password)
         signIn({email,password})
-        .then(res=>{
+        .then((res: Response) => {
             if (res.ok){
                 return res.json();
-                
+
             }else{
                 console.log('error');
-        
+
             }
         })
-        .then(data=>{
+        .then((data: { user: any; accessToken: string; refreshToken: string }) => {
             dispatch(setUser(data.user))
             dispatch(setAuth(true))
             localStorage.setItem('accessToken', data.accessToken)
             localStorage.setItem('refreshToken', data.refreshToken)
         })
-        
+
+
 
         const { from } = location.state || {from: {pathname: '/'}}
-        navigate({from});
+        navigate(from);
         }
     
     return (
-        
+
             <>
             <form ref={form} onSubmit={handleClick}>
             <div className={styleSI.wrapper}>
                 <p className="text text_type_main-medium mb-6">
                         Вход
                 </p>
+
                 <EmailInput
-                    name={'emailLogin'}
+                    name='emailLogin'
                     placeholder="Email"
                     extraClass="mb-6"
-                   // onChange={handleEmail}
                     
                 />
                 <PasswordInput
                     name={'emailPass'}
                     extraClass="mb-6"
-                  //  onChange={handlePass}
                 
+
                 />
                 <Button 
                     htmlType="submit" 
                     type="primary" 
                     size="medium"
                     extraClass="mb-20"
-                
+
                 >
                     Войти
                 </Button>

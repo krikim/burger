@@ -1,16 +1,33 @@
-import React from 'react';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from './modal.jsx'
-import styleOrder from './order-details.module.css'
 import OrderLogo from '../../images/order-detail.svg'
+//@ts-ignore
 import { useAddOrderQuery } from '../../services/api.js';
 import { useSelector } from 'react-redux';
 
+interface IconstructPropTypes {
+  _id:string,
+  name:string,
+  type:string,
+  proteins:number,
+  fat:number,
+  carbohydrates:number,
+  calories:number,
+  price:number,
+  image:string,
+  image_mobile:string,
+  image_large:string,
+  __v:number,
+  inElement?:boolean|null,
+  key?:string
+
+}
+
+
+
 const OrderDetails = () => {
-        const elements = useSelector(state => state.constr.elements);
-        const bun = useSelector(state => state.constr.bun);
+        const elements:Array<IconstructPropTypes> = useSelector((state:any) => state.constr.elements);
+        const bun:IconstructPropTypes = useSelector((state:any) => state.constr.bun);
         //if (!elements) return null;
-        let order = ''
+        let order:string = ''
         elements.forEach(el => {
           order += '"'+el._id + '",'
           //  order += el._id + ','
@@ -20,7 +37,7 @@ const OrderDetails = () => {
         console.log(order);
         const { isLoading, data, isError } = useAddOrderQuery('['+order+']');
         console.log(order);
-        let orderItems = {}
+        let orderItems:any = {}
         if (!isLoading &&!isError && data){ 
            orderItems=data
         }

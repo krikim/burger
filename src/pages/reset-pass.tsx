@@ -2,23 +2,24 @@ import { PasswordInput,Input,Button } from "@ya.praktikum/react-developer-burger
 import { Link, Navigate } from "react-router-dom"
 import styleRP from "./reset-pass.module.css"
 import { useNavigate } from "react-router-dom"
+//@ts-ignore
 import { reset } from "../services/api"
-import { useRef } from "react"
+import { FormEvent, useRef } from "react"
 
 const ResetPass = () => {
     const navigate = useNavigate()
-    const forgotPass = localStorage.getItem('forgotPass')
-    const form = useRef()
+    const forgotPass:string|null = localStorage.getItem('forgotPass')
+    const form = useRef<any>()
 
-    const handleClick= (e) =>{
+    const handleClick= (e:FormEvent) =>{
         e.preventDefault();
             const pass = form.current[0].value;
             const token = form.current[1].value;
             console.log(pass,token)
            reset({pass,token})
-           .then((res)=>{
+           .then((res: { success: boolean; message: string }) => {
                  if (res.success){
-                    localStorage.setItem('forgotPass',false)
+                    localStorage.setItem('forgotPass','false')
                     console.log(res.message)
                     navigate('/signin',{replace:true})
                  }

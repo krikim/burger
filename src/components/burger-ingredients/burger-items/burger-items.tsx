@@ -5,9 +5,9 @@ import { useDrag } from 'react-dnd'
 import { nanoid } from '@reduxjs/toolkit'
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import IngredientDetails from '../../modal/ingredient-details.jsx';
+import IngredientDetails from '../../modal/ingredient-details.js';
 import { setIngredient } from '../../../services/currentIngredientSlice.js';
-import Modal from '../../modal/modal.jsx'
+import Modal from '../../modal/modal.js'
 import { useLocation,Link } from 'react-router-dom'
 
 
