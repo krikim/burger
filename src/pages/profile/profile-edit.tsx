@@ -15,7 +15,7 @@ const user = useSelector((state:any)=>state.user.user)
     const [showEdit,setShowEdit] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const form = useRef<any>();
+    const form = useRef<HTMLFormElement|null>(null);
     
     const handleEdit = (e:ChangeEvent<HTMLInputElement>)=> {
         e.preventDefault()
@@ -26,15 +26,22 @@ const user = useSelector((state:any)=>state.user.user)
     }
     const handleCancel = (e:FormEvent) =>{
         e.preventDefault()
-        form.current[2].value='';
-        form.current[1].value=user.email;
-        form.current[0].value=user.name;
+        if (form.current!==null){
+            const iForm = Array.from(form.current.elements) as HTMLInputElement[];
+
+            iForm[2].value='';
+            iForm[1].value=user.email;
+            iForm[0].value=user.name;
+        }
     }
     const handleClick = (e:FormEvent)=>{
         e.preventDefault()
-        const name=form.current[0].value
-        const email=form.current[1].value
-        const password=form.current[2].value
+        if (form.current!==null){
+            const iForm = Array.from(form.current.elements) as HTMLInputElement[];
+            const name=iForm[0].value
+            const email=iForm[1].value
+            const password=iForm[2].value
+        
 
         updateUser({email,password,name})
         .then((res:{user:string})=>{
@@ -44,6 +51,7 @@ const user = useSelector((state:any)=>state.user.user)
                 navigate('/profile')
             }
         })
+    }
     }
 return(
             <>

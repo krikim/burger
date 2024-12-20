@@ -14,30 +14,36 @@ const SignIn = () => {
     const dispatch = useDispatch()
     const location:Location = useLocation()
     const navigate:NavigateFunction = useNavigate()
-    const form = useRef<any>(null)
+    const form = useRef<HTMLFormElement|null>(null)
+    
     
     const handleClick = (e:FormEvent) => {
         e.preventDefault()
         console.log('cred:',form)
-        const email=form.current[0].value;
-        const password=form.current[1].value;
-        console.log('cred:',email,password)
-        signIn({email,password})
-        .then((res: Response) => {
-            if (res.ok){
-                return res.json();
+        if (form.current!== null){
+            const iForm = Array.from(form.current.elements) as HTMLInputElement[];
+            
+            const email=iForm[0].value
+            const password=iForm[1].value
+      
+            console.log('cred:', email, password)
+            signIn({ email, password })
+                .then((res: Response) => {
+                    if (res.ok) {
+                        return res.json();
 
-            }else{
-                console.log('error');
+                    } else {
+                        console.log('error');
 
-            }
-        })
-        .then((data: { user: any; accessToken: string; refreshToken: string }) => {
-            dispatch(setUser(data.user))
-            dispatch(setAuth(true))
-            localStorage.setItem('accessToken', data.accessToken)
-            localStorage.setItem('refreshToken', data.refreshToken)
-        })
+                    }
+                })
+                .then((data: { user: any; accessToken: string; refreshToken: string }) => {
+                    dispatch(setUser(data.user))
+                    dispatch(setAuth(true))
+                    localStorage.setItem('accessToken', data.accessToken)
+                    localStorage.setItem('refreshToken', data.refreshToken)
+                })
+        }
 
 
 

@@ -9,12 +9,15 @@ import { FormEvent, useRef } from "react"
 const ResetPass = () => {
     const navigate = useNavigate()
     const forgotPass:string|null = localStorage.getItem('forgotPass')
-    const form = useRef<any>()
+    const form = useRef<HTMLFormElement|null>(null)
 
     const handleClick= (e:FormEvent) =>{
         e.preventDefault();
-            const pass = form.current[0].value;
-            const token = form.current[1].value;
+        if (form.current !== null){
+            const iForm = Array.from(form.current.elements) as HTMLInputElement[];
+              
+            const pass = iForm[0].value;
+            const token = iForm[1].value;
             console.log(pass,token)
            reset({pass,token})
            .then((res: { success: boolean; message: string }) => {
@@ -24,6 +27,7 @@ const ResetPass = () => {
                     navigate('/signin',{replace:true})
                  }
            })         
+        }
     }
     return (
         <>

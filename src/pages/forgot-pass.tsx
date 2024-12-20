@@ -6,19 +6,24 @@ import { forgot } from "../services/api"
 import { useNavigate } from "react-router-dom"
 import { FormEvent, useRef } from "react"
 const ForgotPass = () => {
-    const form = useRef<any>(null)
+    const form = useRef<HTMLFormElement|null>(null)
+    
     const navigate = useNavigate()
     const handleClick= (e:FormEvent) =>{
         e.preventDefault()
-        const email = form.current[0].value
-           forgot({email})
-           .then((res: { success: boolean; message: string }) => {
-                 if (res.success){
-                    console.log(res.message)
-                    localStorage.setItem('forgotPass','true')
-                    navigate('/reset-pass',{replace:true})
-                 }
-           })         
+        if (form.current!== null){
+            const iForm = Array.from(form.current.elements) as HTMLInputElement[];
+
+            const email = iForm[0].value
+            forgot({ email })
+                .then((res: { success: boolean; message: string }) => {
+                    if (res.success) {
+                        console.log(res.message)
+                        localStorage.setItem('forgotPass', 'true')
+                        navigate('/reset-pass', { replace: true })
+                    }
+                }) 
+        }        
     }
     return (
         <>
