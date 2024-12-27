@@ -1,20 +1,23 @@
 import {Button, ConstructorElement, CurrencyIcon,DragIcon}  from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useMemo, useEffect, useRef } from 'react';
+import React, { FC, MouseEvent, useMemo } from 'react';
 import styleBC from './burger-constructor.module.css';
 //import PropTypes from 'prop-types';
-import OrderDetails from '../modal/order-details.jsx';
-import Modal from '../modal/modal.jsx';
+import OrderDetails from '../modal/order-details.js';
+import Modal from '../modal/modal.js';
 import { useSelector, useDispatch } from 'react-redux';
+// @ts-ignore
 import { addItem, moveItem, removeItem, setBun } from '../../services/constrSlice.js';
 import { useDrag, useDrop } from'react-dnd';
-import {  useGetIngredientsQuery } from '../../services/api';
+//@ts-ignore
+import {  useGetIngredientsQuery } from '../../services/api.js';
 import {  nanoid } from '@reduxjs/toolkit';
 
-const SummaryElement = ({summ}) => {
-    const [show,setShow] = React.useState(false)
-    const elements = useSelector(state => state.constr.elements);
-    const bun = useSelector(state => state.constr.bun);
-    
+interface ISummaryElement  {
+    summ: number;
+}
+
+const SummaryElement:React.FC<ISummaryElement> = ({summ}) => {
+    const [show,setShow] = React.useState<boolean>(false)
     
     const handleShowModal = () => {
         
@@ -36,32 +39,35 @@ const SummaryElement = ({summ}) => {
                     header='Состав заказа'
                     handleModalClose={handleCloseModal}
             >
-                <OrderDetails orderItems=''  />
+                <OrderDetails />
             </Modal>
         </div>)
 }
 
-/* SummaryElement.propTypes = {
-    summ: PropTypes.number
+
+interface IconstructPropTypes {
+       _id:string,
+       name:string,
+       type:string,
+       proteins:number,
+       fat:number,
+       carbohydrates:number,
+       calories:number,
+       price:number,
+       image:string,
+       image_mobile:string,
+       image_large:string,
+       __v:number,
+       inElement?:boolean|null,
+       key?:string
+
 }
 
-const constructPropTypes = PropTypes.shape({
-       _id:PropTypes.string.isRequired,
-       name:PropTypes.string.isRequired,
-       type:PropTypes.string.isRequired,
-       proteins:PropTypes.number.isRequired,
-       fat:PropTypes.number.isRequired,
-       carbohydrates:PropTypes.number.isRequired,
-       calories:PropTypes.number.isRequired,
-       price:PropTypes.number.isRequired,
-       image:PropTypes.string.isRequired,
-       image_mobile:PropTypes.string.isRequired,
-       image_large:PropTypes.string.isRequired,
-       __v:PropTypes.number.isRequired
+interface IHeadElement{
+    bun:IconstructPropTypes
+}
 
-})
- */
-const HeadElement = ({bun}) => {
+const HeadElement:React.FC<IHeadElement> = ({ bun }) => {
         return (
         <div className={styleBC.construct+' ml-6 mb-4 mt-25'}>
         <ConstructorElement
@@ -75,15 +81,22 @@ const HeadElement = ({bun}) => {
       />
       </div>)
     }
-
-const ScrollBoxElement=({item,index,id}) =>{ 
+    interface IScrollBoxElement {
+        item:IconstructPropTypes,
+        index: number,
+        id: string
+    }
+  
+const ScrollBoxElement:FC<IScrollBoxElement>=({item,index,id}) =>{ 
             const dispatch = useDispatch();
             
-            const handleShowModalItem = (e) => {
-                console.log(e.target.type)
-                const rect = e.target.getBoundingClientRect();
+            const handleShowModalItem = (e:MouseEvent<HTMLDivElement>) => {
+                const target = e.target as HTMLDivElement;
+                
+                const rect = target.getBoundingClientRect();
+
                 console.log('rect', rect)   
-                if (e.target.className === 'constructor-element__action pr-2'||e.target.className === 'constructor-element__price'||(rect.width===18&&rect.height<21)) {
+                if (target.className === 'constructor-element__action pr-2'||target.className === 'constructor-element__price'||(rect.width===18&&rect.height<21)) {
                         dispatch(removeItem(item.key));
                  }
             }
@@ -95,8 +108,8 @@ const ScrollBoxElement=({item,index,id}) =>{
                   handlerId: monitor.getHandlerId(),
                 }
               },
-              drop: (item, monitor) => {
-                if (index===item.index) return
+              drop: (item:any) => {
+                if (index === item.index) return
                 dispatch(moveItem({'from':item.index, 'to':index}))
                 console.log('drop', item.index, index)
                 
@@ -112,10 +125,14 @@ const ScrollBoxElement=({item,index,id}) =>{
               }),
             })
             console.log('drag', isDragging)
+            
             return(
                 <>
                 <div ref={drop}>
+                    {/*
+                    // @ts-ignore */}
                 <div ref={drag} key={nanoid()} draggable className={styleBC.construct+' mb-4'}  onClick={handleShowModalItem} index={index} data-handler-id={handlerId}>
+                
                 <DragIcon type="primary" key={'DI'+item._id} />
                 <ConstructorElement
                     text={item.name}
@@ -129,14 +146,12 @@ const ScrollBoxElement=({item,index,id}) =>{
                 
                 )
 }
-        
-/* 
-ScrollBoxElement.propTypes = {
-    dataList: PropTypes.arrayOf(constructPropTypes)
-    
+
+interface IBottomElement{
+    bun: IconstructPropTypes
 }
- */
-const BottomElement = ({bun}) => {
+ 
+const BottomElement:FC<IBottomElement> = ({ bun }) => {
     return (
                     <ConstructorElement
                         key={nanoid()}
@@ -151,9 +166,6 @@ const BottomElement = ({bun}) => {
     )        
 }
 
-//BottomElement.propTypes ={
-   // bun : constructPropTypes
-//}
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -161,13 +173,10 @@ const BurgerConstructor = () => {
     if(isLoading) return null;
     if(isError) return <div>Ошибка загрузки ингредиентов</div>;
     
-   //// useMemo(()=>{
-    //    dispatch(setIngredients(data.data))
-   // },[]);
     
     const [,drop ] = useDrop({
         accept: 'construct',
-        drop(item){
+        drop(item:IconstructPropTypes){
             if (item.type==='bun') {
                 dispatch(setBun(item))
             }else{
@@ -189,12 +198,12 @@ const BurgerConstructor = () => {
         //return bun
     //}, [dataItems]  );
     
-    const bun = useSelector(state => state.constr.bun);
-    const elements = useSelector(state => state.constr.elements);
+    const bun:IconstructPropTypes = useSelector((state:any) => state.constr.bun);
+    const elements:Array<IconstructPropTypes> = useSelector((state:any) => state.constr.elements);
         
     const summ = useMemo(() => {
         if (!elements.length) return bun.price*2;
-        return elements.reduce((acc, item) => acc + item.price, 0) + bun.price*2
+        return elements.reduce((acc:number, item:IconstructPropTypes) => acc + item.price, 0) + bun.price*2
     }, [elements,bun] );
 
     const box = useMemo(() => {

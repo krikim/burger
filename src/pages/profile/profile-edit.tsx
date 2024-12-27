@@ -1,46 +1,57 @@
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { useRef, useState } from "react"
+import { ChangeEvent, FormEvent, useRef, useState } from "react"
 import { useDispatch } from "react-redux"
+//@ts-ignore
 import { setUser } from "../../services/userSlice"
+//@ts-ignore
 import { updateUser } from "../../services/api"
 import { EmailInput,PasswordInput,Button, Input } from "@ya.praktikum/react-developer-burger-ui-components"
 import styleProfile from './profile.module.css'
 
 const ProfileEdit = () => {
-const user = useSelector(state=>state.user.user)
+const user = useSelector((state:any)=>state.user.user)
+
     const [showEdit,setShowEdit] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const form = useRef();
+    const form = useRef<HTMLFormElement|null>(null);
     
-    const handleEdit = (e)=> {
+    const handleEdit = (e:ChangeEvent<HTMLInputElement>)=> {
         e.preventDefault()
         if (e.target.value.length>2){
             setShowEdit(true)
         }
         
     }
-    const handleCancel = (e) =>{
+    const handleCancel = (e:FormEvent) =>{
         e.preventDefault()
-        form.current[2].value='';
-        form.current[1].value=user.email;
-        form.current[0].value=user.name;
+        if (form.current!==null){
+            const iForm = Array.from(form.current.elements) as HTMLInputElement[];
+
+            iForm[2].value='';
+            iForm[1].value=user.email;
+            iForm[0].value=user.name;
+        }
     }
-    const handleClick = (e)=>{
+    const handleClick = (e:FormEvent)=>{
         e.preventDefault()
-        const name=form.current[0].value
-        const email=form.current[1].value
-        const password=form.current[2].value
+        if (form.current!==null){
+            const iForm = Array.from(form.current.elements) as HTMLInputElement[];
+            const name=iForm[0].value
+            const email=iForm[1].value
+            const password=iForm[2].value
+        
 
         updateUser({email,password,name})
-        .then(res=>{
+        .then((res:{user:string})=>{
             console.log(res)
             if (res.user){
                 dispatch(setUser(res.user))
                 navigate('/profile')
             }
         })
+    }
     }
 return(
             <>
@@ -53,6 +64,7 @@ return(
                     icon="EditIcon"
                     onChange={handleEdit}
                     defaultValue={user.name}
+                    
                     
                 />
                 <EmailInput

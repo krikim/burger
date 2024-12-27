@@ -1,45 +1,50 @@
 import { EmailInput,PasswordInput,Button, Input } from "@ya.praktikum/react-developer-burger-ui-components"
-import { Link, Navigate, useLocation } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import styleReg from "./register.module.css"
 import { useDispatch } from "react-redux"
+//@ts-ignore
 import { register } from "../services/api"
+//@ts-ignore
 import { setUser } from "../services/userSlice"
-import { useRef } from "react"
+import { FormEvent, useRef } from "react"
 const Register = () => {
     const dispatch = useDispatch()
-    const location = useLocation()
-    const form = useRef()
+    const form = useRef<HTMLFormElement|null>(null)
         
-    const handleClick = (e) => {
+    const handleClick = (e:FormEvent) => {
         e.preventDefault()
-        const email=form.current[0].value
-        const password=form.current[1].value
-        const name = form.current[2].value
-        console.log('cred:',email,password)
-        register({email,password,name})
-        .then(res=>{
-            if (res.ok){
-                return res.json()
-                 
-            }else{
-                console.log('error');
-                
-            }
-        })
-        .then((res)=>{
-            dispatch(setUser(res.user))
-                 localStorage.setItem("refreshToken", res.refreshToken); 
-                 localStorage.setItem("accessToken", res.accessToken);
-                 console.log(
-                    'User registered successfully. Redirecting to profile...',
-                    res,
-                    res.user,
-                    res.accessToken,
-                    res.refreshToken
-                 );
-                 <Navigate to='/profile' />
-   
-        })
+        if (form.current!== null){
+            const iForm = Array.from(form.current.elements) as HTMLInputElement[];
+            
+            const email=iForm[0].value
+            const password=iForm[1].value
+            const name = iForm[2].value
+            console.log('cred:', email, password)
+            register({ email, password, name })
+                .then((res: Response) => {
+                    if (res.ok) {
+                        return res.json()
+
+                    } else {
+                        console.log('error');
+
+                    }
+                })
+                .then((res: { user: string, refreshToken: string, accessToken: string }) => {
+                    dispatch(setUser(res.user))
+                    localStorage.setItem("refreshToken", res.refreshToken);
+                    localStorage.setItem("accessToken", res.accessToken);
+                    console.log(
+                        'User registered successfully. Redirecting to profile...',
+                        res,
+                        res.user,
+                        res.accessToken,
+                        res.refreshToken
+                    );
+                    <Navigate to='/profile' />
+
+                })
+        }
     }
         
         
