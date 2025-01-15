@@ -1,14 +1,12 @@
 import { useMemo} from 'react';
-//import PropTypes from 'prop-types';
 import {Tab}  from '@ya.praktikum/react-developer-burger-ui-components';
 import styleBI from './burger-ingridients.module.css'
 import BurgerItems from './burger-items/burger-items';
-//@ts-ignore
-import { useGetIngredientsQuery } from '../../services/api';
+import { useGetIngredientsQuery } from '../../services/api.ts';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { useDispatch, useSelector } from'react-redux'
-//@ts-ignore
-import { setTab,setIngredients } from '../../services/ingredientSlice';
+import { setTab } from '../../services/ingredientSlice.ts';
+import { getElements, TBun } from '../../services/constrSlice.ts';
 
 const SelectTab = () =>{
         const current = useSelector((state:any) => state.ingredient.currentTab);
@@ -32,32 +30,22 @@ const SelectTab = () =>{
     
 }
 
-interface IconstructPropTypes {
-  _id:string,
-  name:string,
-  type:string,
-  proteins:number,
-  fat:number,
-  carbohydrates:number,
-  calories:number,
-  price:number,
-  image:string,
-  image_mobile:string,
-  image_large:string,
-  __v:number,
-  inElement?:boolean|null,
-  key?:string
-
+type TIQuery = {
+  isLoading?: boolean;
+  isError?: boolean;
+  data?: {
+    data: Array<TBun>
+  }
 }
-
 const BurgerIngredients = () => {
-  const { isLoading, data, isError } = useGetIngredientsQuery();
+  const { isLoading, data, isError }:TIQuery = useGetIngredientsQuery(undefined);
   const dispatch = useDispatch();
   //!isLoading&&!isError&&data.data.length&&dispatch(setIngredients(data.data));
   
   //const burger = useMemo(() => {<BurgerItems dataItems={data.data} />}, [data,elements]);
-  const elements:Array<IconstructPropTypes> = useSelector((state:any) => state.constr.elements);
-  const burger = useMemo(() => (!isLoading&&!isError&&data.data.length&&<BurgerItems dataItems={data.data} />), [data,elements]);
+  const elements = useSelector(getElements);
+  const burger = useMemo(() => !isLoading&&!isError&&data&&data.data.length&&<BurgerItems  dataItems={ data.data } />
+  , [data,elements]);
   const handleScroll = () => {
 
     let itemBunHead:HTMLElement|null=document.getElementById('itemBunId')
@@ -90,7 +78,7 @@ const BurgerIngredients = () => {
         {isLoading && 'Загрузка...'}
         {isError && 'Произошла ошибка!'}
         
-        {!isLoading && !isError && data.data.length && 
+        {!isLoading && !isError && data && data.data.length && 
           <>
           <section className={styleBI.section}>
           <h2 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h2>
@@ -107,8 +95,5 @@ const BurgerIngredients = () => {
        </> 
      )
 }
-/* BurgerIngredients.propTypes = {
-  dataItems: PropTypes.arrayOf(constructPropTypes)
 
-} */
 export default BurgerIngredients

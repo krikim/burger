@@ -8,10 +8,10 @@ import { userSlice } from "./userSlice";
 
 export const rootReducer = combineSlices(burgerApi,constrSlice, ingredientSlice, currentIngredientSlice, userSlice);
 
-export const configureStore = (initialState) => {
+export const configureStore = () => {
     const store = createStore({
         reducer: rootReducer,
-        preloadedState: initialState, 
+        //preloadedState: initialState, 
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(burgerApi.middleware),
         devTools: process.env.NODE_ENV === "development"
     });

@@ -1,18 +1,15 @@
 import {Counter, CurrencyIcon}  from '@ya.praktikum/react-developer-burger-ui-components'
 import styleBurgerItem from './burger-items.module.css'
-import PropTypes, { element } from 'prop-types'
 import { useDrag } from 'react-dnd'
-import { nanoid } from '@reduxjs/toolkit'
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import IngredientDetails from '../../modal/ingredient-details.js';
-import { setIngredient } from '../../../services/currentIngredientSlice.js';
-import Modal from '../../modal/modal.js'
+import { useSelector,  } from 'react-redux'
 import { useLocation,Link } from 'react-router-dom'
+import { getElements, TBun } from '../../../services/constrSlice'
 
+import { nanoid, } from '@reduxjs/toolkit'
 
-const ItemTypeHeader = ({itype,id}) => {
-    const what = [{
+// ... previous code remains the same
+const ItemTypeHeader = ({itype, id}: TItemHead) => {
+    const what:Array<{type:string,name:string}> = [{
                     type:"bun",
                     name:"Булки"
                 },
@@ -24,51 +21,40 @@ const ItemTypeHeader = ({itype,id}) => {
                     type:"main",
                     name:"Начинки"
                 }]
+
+    
+    const itemType = what.find((item) => item.type === itype);
+    if (!itemType) {
+        throw new Error(`Invalid itype: ${itype}`);
+    }
     return (
             <h2 className={styleBurgerItem.header+' text text_type_main-medium mb-6 mt-2'} id={id}>
-                {
-                    what.find((item)=>itype===item.type).name
-                }
+                {itemType.name}
             </h2>
     )
-            
 }
 
-const constructPropTypes = PropTypes.shape({
-    _id:PropTypes.string.isRequired,
-    name:PropTypes.string.isRequired,
-    type:PropTypes.string.isRequired,
-    proteins:PropTypes.number.isRequired,
-    fat:PropTypes.number.isRequired,
-    carbohydrates:PropTypes.number.isRequired,
-    calories:PropTypes.number.isRequired,
-    price:PropTypes.number.isRequired,
-    image:PropTypes.string.isRequired,
-    image_mobile:PropTypes.string.isRequired,
-    image_large:PropTypes.string.isRequired,
-    __v:PropTypes.number.isRequired
-  
-  })
-  
-const ItemElement = ({item}) => {
-    const dispatch = useDispatch();
-            
-          /*  const [showItem,setShowItem] = React.useState(false)
-            const handleCloseModalItem = () => {
-                setShowItem(false)
-            }
-            const handleShowModalItem = () => {
-                dispatch(setIngredient(item))
-                setShowItem(!showItem)
-            }
-*/
+
+
+type TItemHead = {
+    itype:string;
+    id: string
+}
+
+
+
+  interface IIElement {
+    item:TBun;
+  }
+const ItemElement = ({item}:IIElement) => {
+   
     const [, dragRef ] = useDrag(() => ({
         type: 'construct',
         item: item 
     })
 )
-const elements = useSelector(state=>state.constr.elements);
-let count = 0;
+const elements = useSelector(getElements);
+let count:number = 0;
 //console.log(elements.length)
 if (elements.length) { 
 elements.forEach(element => {
@@ -77,6 +63,7 @@ elements.forEach(element => {
 } 
 const location = useLocation();
 const itemId = item._id
+let className:string = styleBurgerItem.item;
 //console.log(count)  
 return (
     <Link
@@ -89,7 +76,7 @@ return (
         className={styleBurgerItem.link}
         item = {item}
     >
-    <div key={nanoid} draggable ref={dragRef} className={styleBurgerItem.item+' ml-4 mb-8'} >
+    <div key={nanoid()} draggable ref={dragRef} className={styleBurgerItem.item as string +' ml-4 mb-8'} >
               <img className='ml-4 mb-1' src={item.image}/>
               <span className={styleBurgerItem.component}>
                   <p className='text text_type_digits-default'>
@@ -101,41 +88,33 @@ return (
               <p className='text text_type_main-small mt-1'>
                   {item.name}
               </p>
-              <Counter count={count} size="small" className={styleBurgerItem.item} />
+              <Counter count={count} size="small" className={ className } />
                 
           </div>   
           </Link>  
           
 )
 }
-{/* <Modal
-                        show={showItem}
-                        header='Детали ингридиента'
-                        handleModalClose={handleCloseModalItem}                
-                >
-                    <IngredientDetails/>
-                </Modal>
- */}              
-const ItemType = ({dataItems, itype}) => {
-    const bunData = dataItems.filter((item)=>item.type === itype);
+const ItemType = ({dataItems, itype}: IItemType) => {
+    //console.log(dataItems)
+    const bunData = Array.from(dataItems).filter((item:TBun)=>item.type === itype);
     if (bunData.length === 0) return null;
-    const itemData = bunData.map(item =><ItemElement key={nanoid()} item={item}/>)
+    const itemData = bunData.map((item:TBun) =><ItemElement key={nanoid()}  item={item} />)
       
 return (
             <>
-                <div className={styleBurgerItem.component}>
+                <div id={nanoid()} className={styleBurgerItem.component}>
                     {itemData}
                 </div>
             </>
     )
 }
 
-ItemType.propTypes = {
-    dataList: PropTypes.arrayOf(constructPropTypes),
-    itype: PropTypes.string.isRequired  
+interface IItemType extends IBurgerItems  {
+    itype: string;  
   } 
-const BurgerItems = ({dataItems}) => {
-
+const BurgerItems = ({dataItems}:IBurgerItems) => {
+    console.log(dataItems);
     return (
         <>
             <ItemTypeHeader itype='bun' id='itemBunId' />
@@ -147,7 +126,7 @@ const BurgerItems = ({dataItems}) => {
         </>
     )
 }
-BurgerItems.propTypes = {
-    dataList: PropTypes.arrayOf(constructPropTypes)
+interface IBurgerItems  {
+    dataItems: TBun[];
   }
 export default BurgerItems

@@ -1,16 +1,16 @@
 import {Button, ConstructorElement, CurrencyIcon,DragIcon}  from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { FC, MouseEvent, useMemo } from 'react';
 import styleBC from './burger-constructor.module.css';
-//import PropTypes from 'prop-types';
-import OrderDetails from '../modal/order-details.js';
-import Modal from '../modal/modal.js';
+import OrderDetails from '../modal/order-details.tsx';
+import Modal from '../modal/modal.tsx';
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
-import { addItem, moveItem, removeItem, setBun } from '../../services/constrSlice.js';
+import { addItem, moveItem, removeItem, setBun, TBun } from '../../services/constrSlice.ts';
 import { useDrag, useDrop } from'react-dnd';
-//@ts-ignore
-import {  useGetIngredientsQuery } from '../../services/api.js';
+
+import {  useGetIngredientsQuery } from '../../services/api.ts';
 import {  nanoid } from '@reduxjs/toolkit';
+import { getBun } from '../../services/constrSlice.ts';
+import { getElements } from '../../services/constrSlice.ts';
 
 interface ISummaryElement  {
     summ: number;
@@ -45,26 +45,9 @@ const SummaryElement:React.FC<ISummaryElement> = ({summ}) => {
 }
 
 
-interface IconstructPropTypes {
-       _id:string,
-       name:string,
-       type:string,
-       proteins:number,
-       fat:number,
-       carbohydrates:number,
-       calories:number,
-       price:number,
-       image:string,
-       image_mobile:string,
-       image_large:string,
-       __v:number,
-       inElement?:boolean|null,
-       key?:string
-
-}
 
 interface IHeadElement{
-    bun:IconstructPropTypes
+    bun:TBun;
 }
 
 const HeadElement:React.FC<IHeadElement> = ({ bun }) => {
@@ -82,9 +65,9 @@ const HeadElement:React.FC<IHeadElement> = ({ bun }) => {
       </div>)
     }
     interface IScrollBoxElement {
-        item:IconstructPropTypes,
-        index: number,
-        id: string
+        item:TBun;
+        index: number;
+        id: string;
     }
   
 const ScrollBoxElement:FC<IScrollBoxElement>=({item,index,id}) =>{ 
@@ -148,7 +131,7 @@ const ScrollBoxElement:FC<IScrollBoxElement>=({item,index,id}) =>{
 }
 
 interface IBottomElement{
-    bun: IconstructPropTypes
+    bun: TBun;
 }
  
 const BottomElement:FC<IBottomElement> = ({ bun }) => {
@@ -168,19 +151,24 @@ const BottomElement:FC<IBottomElement> = ({ bun }) => {
 
 
 const BurgerConstructor = () => {
+    
     const dispatch = useDispatch();
-    const { isLoading, data, isError } = useGetIngredientsQuery();
-    if(isLoading) return null;
-    if(isError) return <div>Ошибка загрузки ингредиентов</div>;
+    
+    const { isLoading, data, isError } = useGetIngredientsQuery(undefined);
+   if(isLoading) return null;
+   if(isError) return <div>Ошибка загрузки ингредиентов</div>;
     
     
     const [,drop ] = useDrop({
         accept: 'construct',
-        drop(item:IconstructPropTypes){
+        drop(item:TBun){
             if (item.type==='bun') {
+                console.log('bun')
                 dispatch(setBun(item))
             }else{
                 if (!item.inElement) {
+                    console.log('item',item)
+                
                     dispatch(addItem(item)) 
                 } 
            
@@ -190,20 +178,16 @@ const BurgerConstructor = () => {
         });
        
     const dataItems = data.data;
+    
     if(!dataItems.length) return null;
     
-    //const bunItem = useMemo(() => {
-      //  const bun = dataItems.find((item)=>item.type==='bun')
-        //dispatch(setBun(bun))
-        //return bun
-    //}, [dataItems]  );
-    
-    const bun:IconstructPropTypes = useSelector((state:any) => state.constr.bun);
-    const elements:Array<IconstructPropTypes> = useSelector((state:any) => state.constr.elements);
+    //console.log('dataItems: ',dataItems);
+    const bun:TBun = useSelector(getBun);
+    const elements = useSelector(getElements);
         
     const summ = useMemo(() => {
         if (!elements.length) return bun.price*2;
-        return elements.reduce((acc:number, item:IconstructPropTypes) => acc + item.price, 0) + bun.price*2
+        return elements.reduce((acc:number, item:TBun) => acc + item.price, 0) + bun.price*2
     }, [elements,bun] );
 
     const box = useMemo(() => {
