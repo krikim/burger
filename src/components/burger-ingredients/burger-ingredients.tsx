@@ -5,7 +5,7 @@ import BurgerItems from './burger-items/burger-items';
 import { useGetIngredientsQuery } from '../../services/api.ts';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { useDispatch, useSelector } from'react-redux'
-import { setTab } from '../../services/ingredientSlice.ts';
+import { setIngredients, setTab } from '../../services/ingredientSlice.ts';
 import { getElements, TBun } from '../../services/constrSlice.ts';
 
 const SelectTab = () =>{
@@ -44,6 +44,8 @@ const BurgerIngredients = () => {
   
   //const burger = useMemo(() => {<BurgerItems dataItems={data.data} />}, [data,elements]);
   const elements = useSelector(getElements);
+  !isLoading&&!isError&&data&&data.data.length&&dispatch(setIngredients(data.data))
+  
   const burger = useMemo(() => !isLoading&&!isError&&data&&data.data.length&&<BurgerItems  dataItems={ data.data } />
   , [data,elements]);
   const handleScroll = () => {

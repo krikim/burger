@@ -44,10 +44,7 @@ export const userSlice = createSlice({
       }, 
     setForgotPass: (state:TIstate,action:PayloadAction<boolean>)=>{
                      state.forgotPass = action.payload
-                },
-        
-
-    
+                },   
 },
 selectors: {
   getStateUser: (state:TIstate)=>state.user,

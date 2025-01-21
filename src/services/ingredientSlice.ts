@@ -1,13 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { TBun } from './constrSlice'
 
-type TBun = {
-  type: string,
-  name: string,
-  image: string,
-  price: string,
-  id: string,
-  key?:string
-}
 type TIstate = {
   ingredients: Array<TBun>,
   currentTab: string
@@ -29,9 +22,13 @@ export const ingredientSlice = createSlice({
     },
     
 },
+selectors: {
+  getIngredients : (state:TIstate) => state.ingredients,
+},
   })
 
 // Action creators are generated for each case reducer function
 export const {  setIngredients, setTab } = ingredientSlice.actions
+export const { getIngredients } = ingredientSlice.selectors
 
 export default ingredientSlice.reducer

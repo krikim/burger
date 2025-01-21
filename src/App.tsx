@@ -15,6 +15,8 @@ import { checkUserAuth } from './services/userSlice.ts';
 import { OnlyAuth, OnlyUnAuth } from './components/protected-route.tsx';
 import SignOut from './pages/profile/signout.tsx';
 import NotFound404 from './pages/404.tsx';
+import Feed from './pages/feed.tsx';
+import FeedOrder from './components/modal/feed-order.tsx';
 
 const App = () => {
   const location = useLocation();
@@ -44,8 +46,11 @@ const App = () => {
 
           <main className={styleApp.wrapper}>
             <Routes location={background||location}  >
-              <Route path='/' element={<Home/>}></Route>
+              <Route path='/' element={<Home/>}/>
+              <Route path='/feed' element={<Feed/>}/>
+              <Route path='/feed/:number' element={<FeedOrder/>}/>
               <Route path='/items/:itemId' element={<OnlyAuth component={<IngredientDetails/>}/>} />
+              <Route path='/orders/:number' element={<OnlyAuth component={<FeedOrder/>}/>} />
               <Route path='/signin' element={<OnlyUnAuth component={<SignIn/>}/>}/>
               <Route path='/signout' element={<OnlyAuth component={<SignOut/>}/>}/>
               <Route path='/register' element={<OnlyUnAuth component={<Register/>}/>}/>
@@ -68,6 +73,30 @@ const App = () => {
                 header='Детали ингридиента'
                  >
                   <IngredientDetails/>
+                </Modal>
+              }
+            />
+            <Route
+              path='/feed/:number'
+              element={
+                <Modal  
+                  handleModalClose={handleModalClose}
+                  show={true}
+                  header=''
+                 >
+                  <FeedOrder/>
+                </Modal>
+              }
+            />
+            <Route
+              path='/orders/:number'
+              element={
+                <Modal  
+                  handleModalClose={handleModalClose}
+                  show={true}
+                  header=''
+                 >
+                  <FeedOrder/>
                 </Modal>
               }
             />

@@ -17,7 +17,7 @@ function AppHeader () {
                                 </span>
                             </NavLink>
                             <NavLink
-                                to="/line"
+                                to="/feed"
                                 className={({isActive}) => isActive ?menuItemStyle+' '+navStyle.active : menuItemStyle}
                             >
                                 <ListIcon type="primary" className='mr-2' />

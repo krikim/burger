@@ -175,14 +175,22 @@ export const burgerApi = createApi({
                 url: "orders",
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `${localStorage.getItem('accessToken')}`
                 },
                 //body: JSON.stringify({"ingredients": order})
                 body: '{\"ingredients\": '+order+'}'
             })
             }),
+            getOrder: builder.query({
+              query: (number) => "orders/"+number
+          }),
+            getFeedOrder: builder.query({
+            query: (number) => "feed/"+number
+        }),
+          
               })   
 })
 
 
-export const { useGetIngredientsQuery, useAddOrderQuery } = burgerApi;
+export const { useGetIngredientsQuery, useAddOrderQuery, useGetFeedOrderQuery, useGetOrderQuery } = burgerApi;
