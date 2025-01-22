@@ -17,7 +17,7 @@ const user:TUser|null = useSelector(getStateUser)
     
     const handleEdit = (e:ChangeEvent<HTMLInputElement>)=> {
         e.preventDefault()
-        if (e.target.value.length>2){
+        if (e.target.value&&e.target.value.length>2){
             setShowEdit(true)
         }
         

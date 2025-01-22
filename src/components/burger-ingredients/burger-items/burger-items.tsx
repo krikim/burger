@@ -3,8 +3,6 @@ import styleBurgerItem from './burger-items.module.css'
 import { useDrag } from 'react-dnd'
 import { useLocation,Link } from 'react-router-dom'
 import { getElements, TBun } from '../../../services/constrSlice'
-
-import { nanoid, } from '@reduxjs/toolkit'
 import { useSelector } from '../../../services/store'
 
 // ... previous code remains the same
@@ -76,7 +74,7 @@ return (
         className={styleBurgerItem.link}
         item = {item}
     >
-    <div key={nanoid()} draggable ref={dragRef} className={styleBurgerItem.item as string +' ml-4 mb-8'} >
+    <div key={'dragref'+itemId} draggable ref={dragRef} className={styleBurgerItem.item as string +' ml-4 mb-8'} >
               <img className='ml-4 mb-1' src={item.image}/>
               <span className={styleBurgerItem.component}>
                   <p className='text text_type_digits-default'>
@@ -99,11 +97,11 @@ const ItemType = ({dataItems, itype}: IItemType) => {
     //console.log(dataItems)
     const bunData = Array.from(dataItems).filter((item:TBun)=>item.type === itype);
     if (bunData.length === 0) return null;
-    const itemData = bunData.map((item:TBun) =><ItemElement key={nanoid()}  item={item} />)
+    const itemData = bunData.map((item:TBun) =><ItemElement key={'bund'+item._id}  item={item} />)
       
 return (
             <>
-                <div id={nanoid()} className={styleBurgerItem.component}>
+                <div id={'component'} className={styleBurgerItem.component}>
                     {itemData}
                 </div>
             </>

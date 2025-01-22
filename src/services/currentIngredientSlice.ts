@@ -1,13 +1,6 @@
-import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { TBun } from './constrSlice'
 
-type TBun = {
-  type: string,
-  name: string,
-  image: string,
-  price: number,
-  id: string,
-  key?:string,
-}
 
 type TIstate = {
   ingredient: TBun|{},  // Текущий ингредиент
@@ -21,7 +14,7 @@ export const currentIngredientSlice = createSlice({
   reducers: {
     setIngredient:{
         reducer: (state:TIstate, action:PayloadAction<TBun>) => void(state.ingredient = action.payload),
-        prepare: (items) => ({payload: {...items,key: nanoid()}}),
+        prepare: (items:TBun) => ({payload: {...items,key: 'currentpay'+items._id}}),
     },
 },
   })

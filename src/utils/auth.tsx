@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux"
 import { getUser } from "../services/api.ts"
+import { useDispatch } from "../services/store.ts"
 import { setAuth, setUser, TUser } from "../services/userSlice.ts"
 
 

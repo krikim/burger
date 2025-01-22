@@ -1,4 +1,4 @@
-import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type TBun = {
        _id: string;
@@ -42,11 +42,11 @@ export const constrSlice = createSlice({
   reducers: {
     setBun:{
         reducer: (state:TIstate, action:PayloadAction<TBun>) => {state.bun = action.payload},
-        prepare:(bun:TBun) => ({payload: {...bun,key:nanoid()}})
+        prepare:(bun:TBun) => ({payload: {...bun,key:'paybun'+bun._id}})
     },
     addItem:{
         reducer: (state:TIstate, action:PayloadAction<TBun>) => {state.elements.push(action.payload);console.log(state.elements)},
-        prepare:(item:TBun) => ({payload: {...item,key:nanoid(),inElement:true}})
+        prepare:(item:TBun) => ({payload: {...item,key:'payitem'+item._id,inElement:true}})
     },
     removeItem: (state:TIstate, action:PayloadAction<string|undefined>) => {
         const index = state.elements.findIndex((item:TBun) => item.key === action.payload)
