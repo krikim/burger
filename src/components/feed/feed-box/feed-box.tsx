@@ -37,8 +37,8 @@ const ArrayIngr: FC<IFeedBoxElementIngredients> = ({ inElements }) => {
     return (
         <span>
             {
-                inElements.map((ingrId) => (
-                    <span key={'img'+ingrId}>
+                inElements.map((ingrId,index) => (
+                    <span key={'img'+ingrId+index}>
                         <img className={styleBC.imgingr} src={elements.find((el: TBun) => el._id === ingrId)?.image_large} />
                     </span>
                 ))
