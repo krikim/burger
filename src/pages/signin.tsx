@@ -2,10 +2,10 @@ import { EmailInput,PasswordInput,Button } from "@ya.praktikum/react-developer-b
 import { Link, Location, NavigateFunction, useNavigate } from "react-router-dom"
 import styleSI from "./signin.module.css"
 import { signIn } from "../services/api.ts"
-import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { setAuth, setUser, TUser } from "../services/userSlice.ts";
 import {  FormEvent, useRef } from "react";
+import { useDispatch } from "../services/store.ts";
 
 const SignIn = () => {
 

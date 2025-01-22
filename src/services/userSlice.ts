@@ -57,3 +57,5 @@ selectors: {
 export const {  setUser, setAuth, setForgotPass } = userSlice.actions;
 export const { getStateUser,getStateAuth,getStateForgotPass } = userSlice.selectors;
 export default userSlice.reducer;
+
+export type TuserSliceActions = ReturnType<typeof userSlice.actions[keyof typeof userSlice.actions]>;

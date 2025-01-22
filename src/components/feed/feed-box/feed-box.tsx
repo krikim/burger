@@ -2,10 +2,9 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { FC, MouseEventHandler, useEffect } from 'react';
 import styleBC from './feed-box.module.css';
 import { TBun } from '../../../services/constrSlice.ts';
-import { nanoid } from '@reduxjs/toolkit';
 import { getFeed } from '../../../services/ws/ws-slice.ts';
 import { IFeedItem } from '../../../types/ws-types.ts';
-import { wsConnect } from '../../../services/ws/ws-actions.ts';
+import { wsConnect, wsDisconnect } from '../../../services/ws/ws-actions.ts';
 import { getIngredients } from '../../../services/ingredientSlice.ts';
 import { useDispatch, useSelector } from '../../../services/store.ts';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -39,7 +38,7 @@ const ArrayIngr: FC<IFeedBoxElementIngredients> = ({ inElements }) => {
         <span>
             {
                 inElements.map((ingrId) => (
-                    <span key={nanoid()}>
+                    <span key={'img'+ingrId}>
                         <img className={styleBC.imgingr} src={elements.find((el: TBun) => el._id === ingrId)?.image_large} />
                     </span>
                 ))
@@ -106,7 +105,7 @@ const FeedBoxElement: FC<IFeedBoxElement> = ({ item, isAuth }) => {
     return (
         <>
 
-            <div key={nanoid()} className={styleBC.construct + ' mb-4'} onClick={handleClick}  >
+            <div key={'elem'+item._id} className={styleBC.construct + ' mb-4'} onClick={handleClick}  >
 
 
                 <p className='text text_type_digits-default mt-6' ><span>#{item.number}</span><span className={styleBC.headleft + " text text_type_main-small ml-8"}>{days(item.createdAt)}</span></p>
@@ -135,7 +134,10 @@ const FeedBox: FC<TUrl> = ({ url, isAuth }) => {
 
         dispatch(wsConnect(FEED_URL));
 
-        console.log('effect')
+        //console.log('effect')
+        return () => {
+            dispatch(wsDisconnect());
+        }
     }, [dispatch])
 
 
@@ -144,8 +146,8 @@ const FeedBox: FC<TUrl> = ({ url, isAuth }) => {
             {feed && <section className={styleBC.section + ' ml-10 p-4'}>
                 {!isAuth && <h2 className='text text_type_main-large mt-10 mb-5'>Лента заказов</h2>}
 
-                <div id={nanoid()} className={styleBC.scrollbox + ' p-0 m-0 ml-4'} >
-                    {feed.orders?.map((item, index) => <FeedBoxElement key={nanoid()} item={item} index={index} id={item._id} isAuth={isAuth} />)}
+                <div id={'feedScroll'+isAuth} className={styleBC.scrollbox + ' p-0 m-0 ml-4'} >
+                    {feed.orders?.map((item, index) => <FeedBoxElement key={'fbel'+item._id} item={item} index={index} id={item._id} isAuth={isAuth} />)}
                 </div>
 
             </section>

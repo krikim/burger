@@ -1,11 +1,11 @@
 import {Counter, CurrencyIcon}  from '@ya.praktikum/react-developer-burger-ui-components'
 import styleBurgerItem from './burger-items.module.css'
 import { useDrag } from 'react-dnd'
-import { useSelector,  } from 'react-redux'
 import { useLocation,Link } from 'react-router-dom'
 import { getElements, TBun } from '../../../services/constrSlice'
 
 import { nanoid, } from '@reduxjs/toolkit'
+import { useSelector } from '../../../services/store'
 
 // ... previous code remains the same
 const ItemTypeHeader = ({itype, id}: TItemHead) => {

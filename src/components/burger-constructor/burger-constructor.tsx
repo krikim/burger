@@ -1,46 +1,34 @@
 import {Button, ConstructorElement, CurrencyIcon,DragIcon}  from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { FC, MouseEvent, useMemo } from 'react';
+import React, { FC, MouseEvent, SyntheticEvent, useMemo } from 'react';
 import styleBC from './burger-constructor.module.css';
-import OrderDetails from '../modal/order-details.tsx';
-import Modal from '../modal/modal.tsx';
-import { useSelector, useDispatch } from 'react-redux';
 import { addItem, moveItem, removeItem, setBun, TBun } from '../../services/constrSlice.ts';
 import { useDrag, useDrop } from'react-dnd';
-
 import {  useGetIngredientsQuery } from '../../services/api.ts';
-import {  nanoid } from '@reduxjs/toolkit';
 import { getBun } from '../../services/constrSlice.ts';
 import { getElements } from '../../services/constrSlice.ts';
+import { useDispatch, useSelector } from '../../services/store.ts';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface ISummaryElement  {
     summ: number;
 }
 
 const SummaryElement:React.FC<ISummaryElement> = ({summ}) => {
-    const [show,setShow] = React.useState<boolean>(false)
-    
-    const handleShowModal = () => {
-        
-        setShow(!show)
-    }
-    const handleCloseModal = () => {
-        setShow(false)
+    const navigate = useNavigate()
+    const location = useLocation()
+    const handleClick = (e:SyntheticEvent) => {
+        e.preventDefault()
+       navigate('/order',  { state: { background: location } });
     }
     return (<div className={styleBC.summary+' p-8'}>
             <span className='text text_type_digits-default pr-2'>
                 {summ}
             </span>
             <CurrencyIcon className='mr-10'/>
-            <Button htmlType="button" type="primary" size="small" extraClass="text text_type_digits-small ml-4 p-4" onClick={handleShowModal}>
+            <Button htmlType="button" type="primary" size="small" extraClass="text text_type_digits-small ml-4 p-4" onClick={handleClick}>
                 Оформить заказ
             </Button>
-            <Modal
-                    show={show}
-                    header='Состав заказа'
-                    handleModalClose={handleCloseModal}
-            >
-                <OrderDetails />
-            </Modal>
+            
         </div>)
 }
 
@@ -54,7 +42,7 @@ const HeadElement:React.FC<IHeadElement> = ({ bun }) => {
         return (
         <div className={styleBC.construct+' ml-6 mb-4 mt-25'}>
         <ConstructorElement
-          key={nanoid()}
+          key={'bun'+bun._id}
           type="top"
           isLocked={true}
           text={bun.name+' (верх)'}
@@ -114,7 +102,7 @@ const ScrollBoxElement:FC<IScrollBoxElement>=({item,index,id}) =>{
                 <div ref={drop}>
                     {/*
                     // @ts-ignore */}
-                <div ref={drag} key={nanoid()} draggable className={styleBC.construct+' mb-4'}  onClick={handleShowModalItem} index={index} data-handler-id={handlerId}>
+                <div ref={drag} key={'drag'+index} draggable className={styleBC.construct+' mb-4'}  onClick={handleShowModalItem} index={index} data-handler-id={handlerId}>
                 
                 <DragIcon type="primary" key={'DI'+item._id} />
                 <ConstructorElement
@@ -137,7 +125,7 @@ interface IBottomElement{
 const BottomElement:FC<IBottomElement> = ({ bun }) => {
     return (
                     <ConstructorElement
-                        key={nanoid()}
+                        key={bun._id}
                         type="bottom"
                         isLocked={true}
                         text={bun.name+' (низ)'}

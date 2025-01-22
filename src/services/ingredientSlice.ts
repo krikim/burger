@@ -32,3 +32,5 @@ export const {  setIngredients, setTab } = ingredientSlice.actions
 export const { getIngredients } = ingredientSlice.selectors
 
 export default ingredientSlice.reducer
+
+export type TingredientSliceActions = ReturnType<typeof ingredientSlice.actions[keyof typeof ingredientSlice.actions]>;

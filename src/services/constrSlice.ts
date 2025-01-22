@@ -69,3 +69,4 @@ export const { setBun, addItem, removeItem, moveItem } = constrSlice.actions
 export const {getBun, getElements} = constrSlice.selectors
 
 export default constrSlice.reducer
+export type TconstrSliceActions = ReturnType<typeof constrSlice.actions[keyof typeof constrSlice.actions]>;

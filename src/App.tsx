@@ -1,7 +1,6 @@
 import  { useEffect } from 'react';
 import AppHeader from './components/app-header/app-header.tsx';
 import styleApp from './App.module.css'
-import {  useDispatch } from 'react-redux';
 import Home from './pages/home.tsx';
 import { Routes,Route,useLocation,useNavigate } from 'react-router-dom';
 import IngredientDetails from './components/modal/ingredient-details.tsx';
@@ -17,6 +16,8 @@ import SignOut from './pages/profile/signout.tsx';
 import NotFound404 from './pages/404.tsx';
 import Feed from './pages/feed.tsx';
 import FeedOrder from './components/modal/feed-order.tsx';
+import { useDispatch } from './services/store.ts';
+import OrderDetails from './components/modal/order-details.tsx';
 
 const App = () => {
   const location = useLocation();
@@ -51,6 +52,7 @@ const App = () => {
               <Route path='/feed/:number' element={<FeedOrder/>}/>
               <Route path='/items/:itemId' element={<OnlyAuth component={<IngredientDetails/>}/>} />
               <Route path='/orders/:number' element={<OnlyAuth component={<FeedOrder/>}/>} />
+              <Route path='/order' element={<OnlyAuth component={<OrderDetails/>}/>} />
               <Route path='/signin' element={<OnlyUnAuth component={<SignIn/>}/>}/>
               <Route path='/signout' element={<OnlyAuth component={<SignOut/>}/>}/>
               <Route path='/register' element={<OnlyUnAuth component={<Register/>}/>}/>
@@ -91,13 +93,34 @@ const App = () => {
             <Route
               path='/orders/:number'
               element={
+                <OnlyAuth 
+                  component={
+                
                 <Modal  
                   handleModalClose={handleModalClose}
                   show={true}
                   header=''
                  >
                   <FeedOrder/>
-                </Modal>
+                </Modal>}
+                />
+              }
+            />
+            <Route
+              path='/order'
+              element={
+                <OnlyAuth 
+                  component={
+                            <Modal  
+                                handleModalClose={handleModalClose}
+                                show={true}
+                                header=''
+                            >
+                            <OrderDetails/>
+                            </Modal>
+                  }
+                  />
+                
               }
             />
         </Routes>

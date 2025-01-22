@@ -1,15 +1,15 @@
 import { combineSlices, configureStore as createStore, ThunkDispatch } from "@reduxjs/toolkit";
 import { burgerApi } from "./api";
-import { constrSlice } from "./constrSlice";
-import { ingredientSlice } from "./ingredientSlice";
-import { currentIngredientSlice } from "./currentIngredientSlice";
-import { userSlice } from "./userSlice";
+import { constrSlice, TconstrSliceActions } from "./constrSlice";
+import { ingredientSlice, TingredientSliceActions } from "./ingredientSlice";
+import { currentIngredientSlice, TcurrentIngridientActions } from "./currentIngredientSlice";
+import { TuserSliceActions, userSlice } from "./userSlice";
 import { feedSlice, TWsInternalActions, wsClose, wsConnecting, wsError, wsMessage, wsOpen } from "./ws/ws-slice";
 import { socketMiddleware } from "./ws/ws-mware";
 import { TWsExternalActions, wsConnect, wsDisconnect } from "./ws/ws-actions";
 import { useDispatch as dispatchHook, useSelector as selectorHook, } from 'react-redux';
 
-export type TApplicationActions = TWsExternalActions | TWsInternalActions;
+export type TApplicationActions = TWsExternalActions | TWsInternalActions | TconstrSliceActions | TuserSliceActions| TingredientSliceActions | TcurrentIngridientActions;
 export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
 
 export const rootReducer = combineSlices(burgerApi,constrSlice, ingredientSlice, currentIngredientSlice, userSlice, feedSlice);

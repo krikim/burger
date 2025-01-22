@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { getIngredients } from "../../services/ingredientSlice";
 import { useSelector } from "../../services/store";
-import { nanoid } from "@reduxjs/toolkit";
 import  styleFO  from './feed-order.module.css'
 import { getFeed } from "../../services/ws/ws-slice";
 import { useLocation } from "react-router-dom";
@@ -22,8 +21,7 @@ const FeedOrder: FC = () =>{
         if (from==='orders'){
             const { isLoading, data, isError } = useGetOrderQuery(undefined);
             if (!isLoading &&!isError && data.orders){
-               order=data.orders[0] 
-               
+               order=data.orders[0]    
             }
         }else{
             const { isLoading, data, isError } = useGetFeedOrderQuery(undefined);
@@ -59,7 +57,7 @@ const FeedOrder: FC = () =>{
                     <span className={styleFO.name+" text text_type_main-medium mb-3"}>{order.name}</span>
                     <span className="text text_type_main-small mb-15">{EStatus[order.status]}</span>
                     <span className="text text_type_main-medium mb-6">Состав:</span>
-                    <div id={nanoid()} className={styleFO.scrollbox+' p-0 m-0 ml-4'} >
+                    <div id={'foscroll'} className={styleFO.scrollbox+' p-0 m-0 ml-4'} >
                         {order.ingredients.map( (item) => {
                                     let el = elements.find(el=>el._id===item)
                                     let was = wasIngr.find(el=>el===item)

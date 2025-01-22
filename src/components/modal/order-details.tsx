@@ -1,8 +1,7 @@
 import OrderLogo from '../../images/order-detail.svg'
-//@ts-ignore
 import { useAddOrderQuery } from '../../services/api.ts';
-import { useSelector } from 'react-redux';
 import { getBun, getElements, TBun } from '../../services/constrSlice.ts';
+import { useSelector } from '../../services/store.ts';
 
 const OrderDetails = () => {
         const elements:Array<TBun> = useSelector(getElements);
@@ -30,11 +29,14 @@ const OrderDetails = () => {
         
         {!isLoading && !isError && data.order.number && 
       <>
+      <div>
+                
       <p className="text text_type_digits-large mt-15">{orderItems.order.number}</p>
       <p className="text text_type_main-medium mt-8 mb-15">Идетификатор заказа</p>
       <img src={OrderLogo} />
       <p className="text text_type_main-small mt-15">Ваш заказ начали готовить</p>
       <p className="text text_type_main-small mt-2 mb-30">Дождитесь готовности на орбитальной станции</p>
+      </div>
       </>
             }
     </>

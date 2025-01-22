@@ -29,3 +29,5 @@ export const currentIngredientSlice = createSlice({
 export const {  setIngredient, } = currentIngredientSlice.actions
 
 export default currentIngredientSlice.reducer
+
+export type TcurrentIngridientActions = ReturnType<typeof currentIngredientSlice.actions[keyof typeof currentIngredientSlice.actions]>;

@@ -1,10 +1,10 @@
 import { EmailInput,PasswordInput,Button, Input } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, Navigate } from "react-router-dom"
 import styleReg from "./register.module.css"
-import { useDispatch } from "react-redux"
 import { register } from "../services/api.ts"
 import { setUser, TUser } from "../services/userSlice.ts"
 import { FormEvent, useRef } from "react"
+import { useDispatch } from "../services/store.ts"
 const Register = () => {
     const dispatch = useDispatch()
     const form = useRef<HTMLFormElement|null>(null)

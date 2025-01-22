@@ -1,7 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import { signOut } from '../../services/api';
 import { setUser } from '../../services/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/store';
+
 const SignOut = () =>{
     const dispatch = useDispatch();
     signOut()

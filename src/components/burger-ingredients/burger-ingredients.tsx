@@ -4,9 +4,9 @@ import styleBI from './burger-ingridients.module.css'
 import BurgerItems from './burger-items/burger-items';
 import { useGetIngredientsQuery } from '../../services/api.ts';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { useDispatch, useSelector } from'react-redux'
 import { setIngredients, setTab } from '../../services/ingredientSlice.ts';
 import { getElements, TBun } from '../../services/constrSlice.ts';
+import { useDispatch, useSelector } from '../../services/store.ts';
 
 const SelectTab = () =>{
         const current = useSelector((state:any) => state.ingredient.currentTab);

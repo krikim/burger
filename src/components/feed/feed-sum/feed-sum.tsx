@@ -1,9 +1,8 @@
 import {  }  from '@ya.praktikum/react-developer-burger-ui-components';
 import styleFS from './feed-summ.module.css';
-import {  nanoid } from '@reduxjs/toolkit';
 import { getFeed } from '../../../services/ws/ws-slice.ts';
-import { useSelector } from 'react-redux';
 import { FC } from 'react';
+import { useSelector } from '../../../services/store.ts';
 
 type TStatus = {
     status:string
@@ -13,7 +12,7 @@ const Feed:FC<TStatus> = ({status}) => {
 
     return ( 
          feed.orders.slice(0,20).map((item) => (
-            item.status === status && <span className='text text_type_digits-default p-1' key={nanoid()}>{item.number}</span>
+            item.status === status && <span className='text text_type_digits-default p-1' key={'feed'+item._id}>{item.number}</span>
         ))
     
     )

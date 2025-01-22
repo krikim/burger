@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
 import { ChangeEvent, FormEvent, useRef, useState } from "react"
-import { useDispatch } from "react-redux"
 import { setUser, TUser } from "../../services/userSlice.ts"
 import { updateUser } from "../../services/api.ts"
 import { EmailInput,PasswordInput,Button, Input } from "@ya.praktikum/react-developer-burger-ui-components"
 import styleProfile from './profile.module.css'
 import { getStateUser } from "../../services/userSlice.ts"
+import { useDispatch, useSelector } from "../../services/store.ts"
 
 const ProfileEdit = () => {
 const user:TUser|null = useSelector(getStateUser)
