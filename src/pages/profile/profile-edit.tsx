@@ -1,16 +1,14 @@
 import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
 import { ChangeEvent, FormEvent, useRef, useState } from "react"
-import { useDispatch } from "react-redux"
-//@ts-ignore
-import { setUser } from "../../services/userSlice"
-//@ts-ignore
-import { updateUser } from "../../services/api"
+import { setUser, TUser } from "../../services/userSlice.ts"
+import { updateUser } from "../../services/api.ts"
 import { EmailInput,PasswordInput,Button, Input } from "@ya.praktikum/react-developer-burger-ui-components"
 import styleProfile from './profile.module.css'
+import { getStateUser } from "../../services/userSlice.ts"
+import { useDispatch, useSelector } from "../../services/store.ts"
 
 const ProfileEdit = () => {
-const user = useSelector((state:any)=>state.user.user)
+const user:TUser|null = useSelector(getStateUser)
 
     const [showEdit,setShowEdit] = useState(false)
     const navigate = useNavigate()
@@ -19,19 +17,19 @@ const user = useSelector((state:any)=>state.user.user)
     
     const handleEdit = (e:ChangeEvent<HTMLInputElement>)=> {
         e.preventDefault()
-        if (e.target.value.length>2){
+        if (e.target.value&&e.target.value.length>2){
             setShowEdit(true)
         }
         
     }
     const handleCancel = (e:FormEvent) =>{
         e.preventDefault()
-        if (form.current!==null){
+        if (form.current!==null&&user){
             const iForm = Array.from(form.current.elements) as HTMLInputElement[];
 
             iForm[2].value='';
-            iForm[1].value=user.email;
-            iForm[0].value=user.name;
+            iForm[1].value=user.email?user.email:'';
+            iForm[0].value=user.name?user.name:'';
         }
     }
     const handleClick = (e:FormEvent)=>{
@@ -40,11 +38,11 @@ const user = useSelector((state:any)=>state.user.user)
             const iForm = Array.from(form.current.elements) as HTMLInputElement[];
             const name=iForm[0].value
             const email=iForm[1].value
-            const password=iForm[2].value
+            const pass=iForm[2].value
         
 
-        updateUser({email,password,name})
-        .then((res:{user:string})=>{
+        updateUser({email,pass,name})
+        .then((res:{user:TUser})=>{
             console.log(res)
             if (res.user){
                 dispatch(setUser(res.user))
@@ -63,7 +61,7 @@ return(
                     type={"text"}
                     icon="EditIcon"
                     onChange={handleEdit}
-                    defaultValue={user.name}
+                    defaultValue={user?.name}
                     
                     
                 />
@@ -73,7 +71,7 @@ return(
                     extraClass="mb-6"
                     icon="EditIcon"
                     onChange={handleEdit}
-                    defaultValue={user.email}
+                    defaultValue={user?.email}
                     
                 />
                 <PasswordInput
@@ -89,7 +87,7 @@ return(
                         htmlType="reset"
                         type="secondary"
                         size="large"
-                        //onClick={handleCancel}
+                        
                     >
                         Отмена
                     </Button>
@@ -97,7 +95,7 @@ return(
                         htmlType="submit"
                         type="primary"
                         size="large"
-                       // onClick={handleClick}
+                       
                     >
                         Сохранить
                     </Button>

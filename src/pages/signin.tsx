@@ -1,13 +1,11 @@
 import { EmailInput,PasswordInput,Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, Location, NavigateFunction, useNavigate } from "react-router-dom"
 import styleSI from "./signin.module.css"
-// @ts-ignore
-import { signIn } from "../services/api.js"
-import { useDispatch } from "react-redux";
+import { signIn } from "../services/api.ts"
 import { useLocation } from "react-router-dom";
-// @ts-ignore
-import { setAuth, setUser } from "../services/userSlice.js";
+import { setAuth, setUser, TUser } from "../services/userSlice.ts";
 import {  FormEvent, useRef } from "react";
+import { useDispatch } from "../services/store.ts";
 
 const SignIn = () => {
 
@@ -17,17 +15,17 @@ const SignIn = () => {
     const form = useRef<HTMLFormElement|null>(null)
     
     
-    const handleClick = (e:FormEvent) => {
+    const handleClick = (e: FormEvent) => {
         e.preventDefault()
-        console.log('cred:',form)
-        if (form.current!== null){
+        console.log('cred:', form)
+        if (form.current !== null) {
             const iForm = Array.from(form.current.elements) as HTMLInputElement[];
-            
-            const email=iForm[0].value
-            const password=iForm[1].value
-      
-            console.log('cred:', email, password)
-            signIn({ email, password })
+
+            const email = iForm[0].value
+            const pass = iForm[1].value
+
+            console.log('cred:', email, pass)
+            signIn({ email, pass })
                 .then((res: Response) => {
                     if (res.ok) {
                         return res.json();
@@ -37,19 +35,20 @@ const SignIn = () => {
 
                     }
                 })
-                .then((data: { user: any; accessToken: string; refreshToken: string }) => {
+                .then((data: { user: TUser; accessToken: string; refreshToken: string }) => {
                     dispatch(setUser(data.user))
                     dispatch(setAuth(true))
                     localStorage.setItem('accessToken', data.accessToken)
                     localStorage.setItem('refreshToken', data.refreshToken)
                 })
+
+
+
+
+            const { from } = location.state || { from: { pathname: '/' } }
+            navigate(from);
         }
-
-
-
-        const { from } = location.state || {from: {pathname: '/'}}
-        navigate(from);
-        }
+    }
     
     return (
 

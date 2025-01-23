@@ -1,9 +1,8 @@
 import { Navigate } from 'react-router-dom';
-//@ts-ignore
-import { signOut } from '../../services/api.js';
-//@ts-ignore
-import { setUser,setAuth } from '../../services/userSlice.js';
-import { useDispatch } from 'react-redux';
+import { signOut } from '../../services/api';
+import { setUser } from '../../services/userSlice';
+import { useDispatch } from '../../services/store';
+
 const SignOut = () =>{
     const dispatch = useDispatch();
     signOut()

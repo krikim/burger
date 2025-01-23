@@ -1,30 +1,28 @@
-import React from 'react';
 import { } from '@ya.praktikum/react-developer-burger-ui-components';
 import styleID from './ingredient-details.module.css'
-import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { useGetIngredientsQuery } from '../../services/api';
+import { useGetIngredientsQuery } from '../../services/api.ts';
+import { TBun } from '../../services/constrSlice.ts';
 
+type TIQuery = {
+  isLoading?: boolean;
+  isError?: boolean;
+  data?: {
+    data: Array<TBun>
+  }
+}
 
 const IngredientDetails = () => {
-        const { isLoading, data, isError } = useGetIngredientsQuery();
+        const { isLoading, data, isError }:TIQuery = useGetIngredientsQuery(undefined);
         
-        //const ingredients = []
-       //const ingredients = useSelector(state=>state.ingredient.ingredients);
-        //if (ingredients.length === 0) return
         const location = useLocation();
        const id = location.pathname.split('/')[2];
        // console.log('i:',ingredients)
-       let ingredientItem={}
-       if (!isLoading&&!isError&&data.data.length){
-       ingredientItem=data.data.find(item=>id===item._id)
+       let ingredientItem:TBun|undefined;
+       if (!isLoading&&!isError&&data&&data.data.length){
+        ingredientItem=data.data.find(item=>id===item._id)
        }
   
-        //const ingredientItem = item;
-        //const ingredientItem = ingredients.filter((item)=>{
-        //       console.log(item._id,id)
-        //       item._id !== id}
-        //);
         console.log('location:',location)
         let header = '';
         let iName = "text text_type_main-medium mt-4";

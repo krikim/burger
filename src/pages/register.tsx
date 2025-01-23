@@ -1,12 +1,10 @@
 import { EmailInput,PasswordInput,Button, Input } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link, Navigate } from "react-router-dom"
 import styleReg from "./register.module.css"
-import { useDispatch } from "react-redux"
-//@ts-ignore
-import { register } from "../services/api"
-//@ts-ignore
-import { setUser } from "../services/userSlice"
+import { register } from "../services/api.ts"
+import { setUser, TUser } from "../services/userSlice.ts"
 import { FormEvent, useRef } from "react"
+import { useDispatch } from "../services/store.ts"
 const Register = () => {
     const dispatch = useDispatch()
     const form = useRef<HTMLFormElement|null>(null)
@@ -17,10 +15,10 @@ const Register = () => {
             const iForm = Array.from(form.current.elements) as HTMLInputElement[];
             
             const email=iForm[0].value
-            const password=iForm[1].value
+            const pass=iForm[1].value
             const name = iForm[2].value
-            console.log('cred:', email, password)
-            register({ email, password, name })
+            console.log('cred:', email, pass)
+            register({ email, pass, name })
                 .then((res: Response) => {
                     if (res.ok) {
                         return res.json()
@@ -30,7 +28,7 @@ const Register = () => {
 
                     }
                 })
-                .then((res: { user: string, refreshToken: string, accessToken: string }) => {
+                .then((res: { user: TUser, refreshToken: string, accessToken: string }) => {
                     dispatch(setUser(res.user))
                     localStorage.setItem("refreshToken", res.refreshToken);
                     localStorage.setItem("accessToken", res.accessToken);

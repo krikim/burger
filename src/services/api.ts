@@ -1,8 +1,8 @@
 import { createApi,fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BURGER_API_URL = 'https://norma.nomoreparties.space/api' 
-const checkResponse = (res) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+const BURGER_API_URL:string = 'https://norma.nomoreparties.space/api' 
+const checkResponse = (res:any):Promise<any> => {
+    return res.ok ? res.json() : res.json().then((err:Error) => Promise.reject(err));
   };
   
   export const refreshToken = () => {
@@ -26,14 +26,17 @@ const checkResponse = (res) => {
     });
   };
   
-  export const fetchWithRefresh = async (url, options) => {
+  
+  export const fetchWithRefresh = async (url:string, options: RequestInit) => {
     try {
       const res = await fetch(url, options);
       return await checkResponse(res);
-    } catch (err) {
+    } catch (err:any) {
       if (err.message === "jwt expired") {
         const refreshData = await refreshToken(); //обновляем токен
-        options.headers.authorization = refreshData.accessToken;
+        options.headers = options.headers as Headers || {};  
+        options.headers.set('authorization', `Bearer ${refreshData.accessToken}`);
+      
         const res = await fetch(url, options); //повторяем запрос
         return await checkResponse(res);
       } else {
@@ -41,6 +44,7 @@ const checkResponse = (res) => {
       }
     }
   };
+
 
 export const getUser = async () =>{
   try{
@@ -56,8 +60,13 @@ export const getUser = async () =>{
       
 }
 }
-
-export const updateUser = async ({email,pass,name}) =>{
+interface IParams {
+  email?: string;
+  pass?:string;
+  name?: string;
+  token?: string;
+}
+export const updateUser = async ({email,pass,name}: IParams) =>{
   try{
   return await fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
     method: "PATCH",
@@ -73,14 +82,14 @@ export const updateUser = async ({email,pass,name}) =>{
 }
 }
 
-export const signIn = async ({email, password}) => {
+export const signIn = async ({email, pass}:IParams) => {
   try{
   return await fetch(`${BURGER_API_URL}/auth/login`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'email':email,'password':password})
+    body: JSON.stringify({'email':email,'password':pass})
   })
   }catch(error){
     localStorage.removeItem('accessToken')
@@ -106,21 +115,21 @@ export const signOut = async () => {
 }
 }
 
-export const register = async ({email, password,name}) => {
+export const register = async ({email, pass,name}: IParams) => {
   try{
   return await fetch(`${BURGER_API_URL}/auth/register`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'email':email,'password':password,'name':name})
+    body: JSON.stringify({'email':email,'password':pass,'name':name})
   })
   }catch(error){
     throw error;
       
 }
 }
-export const forgot = async ({email}) => {
+export const forgot = async ({email}:IParams) => {
   try{
   const res= await fetch(`${BURGER_API_URL}/password-reset`, {
     method: "POST",
@@ -136,7 +145,7 @@ export const forgot = async ({email}) => {
 }
 }
 
-export const reset = async ({pass,token}) => {
+export const reset = async ({pass,token}:IParams) => {
   try{
   const res= await fetch(`${BURGER_API_URL}/password-reset/reset`, {
     method: "POST",
@@ -166,14 +175,22 @@ export const burgerApi = createApi({
                 url: "orders",
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `${localStorage.getItem('accessToken')}`
                 },
                 //body: JSON.stringify({"ingredients": order})
                 body: '{\"ingredients\": '+order+'}'
             })
             }),
+            getOrder: builder.query({
+              query: (number) => "orders/"+number
+          }),
+            getFeedOrder: builder.query({
+            query: (number) => "feed/"+number
+        }),
+          
               })   
 })
 
 
-export const { useGetIngredientsQuery, useAddOrderQuery } = burgerApi;
+export const { useGetIngredientsQuery, useAddOrderQuery, useGetFeedOrderQuery, useGetOrderQuery } = burgerApi;

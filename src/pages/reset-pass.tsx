@@ -2,8 +2,7 @@ import { PasswordInput,Input,Button } from "@ya.praktikum/react-developer-burger
 import { Link, Navigate } from "react-router-dom"
 import styleRP from "./reset-pass.module.css"
 import { useNavigate } from "react-router-dom"
-//@ts-ignore
-import { reset } from "../services/api"
+import { reset } from "../services/api.ts"
 import { FormEvent, useRef } from "react"
 
 const ResetPass = () => {

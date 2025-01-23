@@ -1,14 +1,15 @@
 import { FC } from "react"
-import { useSelector } from "react-redux"
 import { Navigate, useLocation } from "react-router-dom"
+import { getStateAuth, getStateUser } from "../services/userSlice"
+import { useSelector } from "../services/store"
 
 interface IProtected{
     onlyUnAuth?: boolean, 
     component: React.ReactElement
 }
 const Protected:FC<IProtected> = ({onlyUnAuth= false, component})=>{
-    const user = useSelector((state:any)=>state.user.user)
-    const isAuthChecked:boolean = useSelector((state:any)=>state.user.isAuthChecked)
+    const user = useSelector(getStateUser)
+    const isAuthChecked:boolean = useSelector(getStateAuth)
     const location = useLocation()
     console.log(user);
     if (!isAuthChecked) return <p>User Загрузка...</p>

@@ -1,21 +1,23 @@
 import  { useEffect } from 'react';
 import AppHeader from './components/app-header/app-header.tsx';
 import styleApp from './App.module.css'
-import {  useDispatch } from 'react-redux';
-import Home from './pages/home.js';
+import Home from './pages/home.tsx';
 import { Routes,Route,useLocation,useNavigate } from 'react-router-dom';
-import IngredientDetails from './components/modal/ingredient-details.js';
-import Modal from './components/modal/modal.js';
-import SignIn from './pages/signin.js';
-import Register from './pages/register.js';
-import ForgotPass from './pages/forgot-pass.js';
-import ResetPass from './pages/reset-pass.js';
-import Profile, { Orders } from './pages/profile/profile.js';
-// @ts-ignore
-import { checkUserAuth } from './services/userSlice.js';
-import { OnlyAuth, OnlyUnAuth } from './components/protected-route.js';
-import SignOut from './pages/profile/signout.js';
-import NotFound404 from './pages/404.js';
+import IngredientDetails from './components/modal/ingredient-details.tsx';
+import Modal from './components/modal/modal.tsx';
+import SignIn from './pages/signin.tsx';
+import Register from './pages/register.tsx';
+import ForgotPass from './pages/forgot-pass.tsx';
+import ResetPass from './pages/reset-pass.tsx';
+import Profile, { Orders } from './pages/profile/profile.tsx';
+import { checkUserAuth } from './services/userSlice.ts';
+import { OnlyAuth, OnlyUnAuth } from './components/protected-route.tsx';
+import SignOut from './pages/profile/signout.tsx';
+import NotFound404 from './pages/404.tsx';
+import Feed from './pages/feed.tsx';
+import FeedOrder from './components/modal/feed-order.tsx';
+import { useDispatch } from './services/store.ts';
+import OrderDetails from './components/modal/order-details.tsx';
 
 const App = () => {
   const location = useLocation();
@@ -45,8 +47,12 @@ const App = () => {
 
           <main className={styleApp.wrapper}>
             <Routes location={background||location}  >
-              <Route path='/' element={<Home/>}></Route>
+              <Route path='/' element={<Home/>}/>
+              <Route path='/feed' element={<Feed/>}/>
+              <Route path='/feed/:number' element={<FeedOrder/>}/>
               <Route path='/items/:itemId' element={<OnlyAuth component={<IngredientDetails/>}/>} />
+              <Route path='/orders/:number' element={<OnlyAuth component={<FeedOrder/>}/>} />
+              <Route path='/order' element={<OnlyAuth component={<OrderDetails/>}/>} />
               <Route path='/signin' element={<OnlyUnAuth component={<SignIn/>}/>}/>
               <Route path='/signout' element={<OnlyAuth component={<SignOut/>}/>}/>
               <Route path='/register' element={<OnlyUnAuth component={<Register/>}/>}/>
@@ -70,6 +76,51 @@ const App = () => {
                  >
                   <IngredientDetails/>
                 </Modal>
+              }
+            />
+            <Route
+              path='/feed/:number'
+              element={
+                <Modal  
+                  handleModalClose={handleModalClose}
+                  show={true}
+                  header=''
+                 >
+                  <FeedOrder/>
+                </Modal>
+              }
+            />
+            <Route
+              path='/orders/:number'
+              element={
+                <OnlyAuth 
+                  component={
+                
+                <Modal  
+                  handleModalClose={handleModalClose}
+                  show={true}
+                  header=''
+                 >
+                  <FeedOrder/>
+                </Modal>}
+                />
+              }
+            />
+            <Route
+              path='/order'
+              element={
+                <OnlyAuth 
+                  component={
+                            <Modal  
+                                handleModalClose={handleModalClose}
+                                show={true}
+                                header=''
+                            >
+                            <OrderDetails/>
+                            </Modal>
+                  }
+                  />
+                
               }
             />
         </Routes>

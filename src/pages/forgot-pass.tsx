@@ -1,7 +1,7 @@
 import { EmailInput,Button } from "@ya.praktikum/react-developer-burger-ui-components"
 import { Link } from "react-router-dom"
 import styleFP from "./forgot-pass.module.css"
-//@ts-ignore
+
 import { forgot } from "../services/api"
 import { useNavigate } from "react-router-dom"
 import { FormEvent, useRef } from "react"
