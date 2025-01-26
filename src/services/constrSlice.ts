@@ -23,7 +23,7 @@ export type TIstate = {
   elements: Array<TBun>;
 }
 
-const iState:TIstate = {
+export const iState:TIstate = {
   bun:{
       _id: '____id',
       type:'bun',
