@@ -74,7 +74,7 @@ return (
         className={styleBurgerItem.link}
         item = {item}
     >
-    <div key={'dragref'+itemId} draggable ref={dragRef} className={styleBurgerItem.item as string +' ml-4 mb-8'} >
+    <div key={'dragref'+itemId} draggable ref={dragRef} className={styleBurgerItem.itemIngredient as string +' ml-4 mb-8'} >
               <img className='ml-4 mb-1' src={item.image}/>
               <span className={styleBurgerItem.component}>
                   <p className='text text_type_digits-default'>

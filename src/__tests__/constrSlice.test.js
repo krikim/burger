@@ -18,7 +18,25 @@ const bun = {
        key: '12323dsfsfsf2323',
       id: 'defer',
 }
-const newState = {...iState,elements:[bun]}
+const bun2 = {
+    _id: '231',
+   name: 'bun',
+   type: 'brad',
+   proteins: 20,
+   fat: 30,
+   carbohydrates: 40,
+   calories: 500,
+   price: 2500,
+   image: 'dummy',
+   image_mobile: 'dummy',
+   image_large: 'dummy',
+   __v: 123,
+   inElement: true,
+   key: '12323dsfsfsf2324',
+  id: 'defer',
+}
+
+const newState = {...iState,elements:[bun,bun2]}
 
 describe('constrSlice', () => {
   it('should return the initial state', () => {
@@ -54,7 +72,19 @@ it('removeItem', () => {
           payload: bun.key 
         }
       )
-    ).toEqual({...iState,elements:[] })
+    ).toEqual({...iState,elements:[bun2] })
   
 })
+it('moveItem', () => {
+    expect(
+      constrSlice.reducer(newState,
+        {
+          type: "constr/moveItem",
+          payload: {to:1,from:0} 
+        }
+      )
+    ).toEqual({...iState,elements:[bun2,bun] })
+  
+})
+
 })

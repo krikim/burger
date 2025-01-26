@@ -86,7 +86,7 @@ const BurgerIngredients = () => {
           <h2 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h2>
           <SelectTab />
         
-          <div className={styleBI.scrollbox} onScroll={handleScroll}>
+          <div className={styleBI.scrollbox} onScroll={handleScroll} data-test-id="ingreds">
           
           {burger}
           </div>

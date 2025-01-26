@@ -34,7 +34,7 @@ const OrderDetails = () => {
       <p className="text text_type_digits-large mt-15">{orderItems.order.number}</p>
       <p className="text text_type_main-medium mt-8 mb-15">Идетификатор заказа</p>
       <img src={OrderLogo} />
-      <p className="text text_type_main-small mt-15">Ваш заказ начали готовить</p>
+      <p className="orderdetail text text_type_main-small mt-15">Ваш заказ начали готовить</p>
       <p className="text text_type_main-small mt-2 mb-30">Дождитесь готовности на орбитальной станции</p>
       </div>
       </>

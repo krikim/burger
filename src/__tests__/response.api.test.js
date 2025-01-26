@@ -17,13 +17,19 @@ describe('check checkResponse function', () => {
     })
 
     it('should be failed', () => {
+        
         const testObject = {
             ok: false,
             status: 500,
-        };
+            json: function () {
+                return Promise.reject('Ошибка: 500')
+            },
+            
+        }
 
         const result = checkResponse(testObject);
 
         return expect(result).rejects.toBe('Ошибка: 500');
     })
+        
 })

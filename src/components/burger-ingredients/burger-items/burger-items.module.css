@@ -5,7 +5,7 @@
     position: relative;
     
 }
-.item{
+.itemIngredient{
     display: flex;
     flex-direction: column;
     justify-content: center;

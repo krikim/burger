@@ -1,6 +1,6 @@
 import { createApi,fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BURGER_API_URL:string = 'https://norma.nomoreparties.space/api' 
+export const BURGER_API_URL:string = 'https://norma.nomoreparties.space/api' 
 export const checkResponse = (res:any):Promise<any> => {
     return res.ok ? res.json() : res.json().then((err:Error) => Promise.reject(err));
   };
