@@ -1,0 +1,16 @@
+[
+    {
+        "likes": [],
+        "_id": "6704431e4b47d2081790f086",
+        "name": "Deer",
+        "link": "https://avatars.mds.yandex.net/i?id=d3542dc5e465083781f51a37e196937a22de8c51-9264723-images-thumbs&n=13",
+        "owner": {
+            "name": "опопо",
+            "about": "rasj",
+            "avatar": "https://media-1obl-ru.storage.yandexcloud.net/resize_cache/582170/e71ad92e8a086fd0ad26a63a20c0e003/iblock/fb1/spasateli_snyali_rebenka_s_dereva_posle_ataki_bobra_v_miasse_.jpg",
+            "_id": "bf728d48bc51fdbcdb11e14a",
+            "cohort": "cohort-13"
+        },
+        "createdAt": "2024-10-07T20:22:54.852Z"
+    }
+]

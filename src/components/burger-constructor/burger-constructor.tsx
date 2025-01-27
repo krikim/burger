@@ -102,7 +102,7 @@ const ScrollBoxElement:FC<IScrollBoxElement>=({item,index,id}) =>{
                 <div ref={drop}>
                     {/*
                     // @ts-ignore */}
-                <div ref={drag} key={'drag'+index} draggable className={styleBC.construct+' mb-4'}  onClick={handleShowModalItem} index={index} data-handler-id={handlerId}>
+                <div data-test-id="target" ref={drag} key={'drag'+index} draggable className={styleBC.construct+' mb-4'}  onClick={handleShowModalItem} index={index} data-handler-id={handlerId}>
                 
                 <DragIcon type="primary" key={'DI'+item._id} />
                 <ConstructorElement

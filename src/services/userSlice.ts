@@ -27,7 +27,7 @@ type TIstate = {
   user: TUser | null,
   forgotPass: boolean,
 }
-const iState:TIstate = {
+export const iState:TIstate = {
   isAuthChecked:false,
   user:null,
   forgotPass:false,
